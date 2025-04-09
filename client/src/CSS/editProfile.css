@@ -1,29 +1,27 @@
-.profile-box {
+.profile-section {
     background-color: #fff;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
-.profile-label {
-    font-weight: 600;
-    color: #666;
-    font-size: 0.9rem;
+.form-label {
+    font-weight: 500;
 }
 
-.profile-value {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-}
-
-.edit-btn {
+.save-btn {
     background-color: #000;
-    color: #fff;
+    color: white;
 }
 
-.edit-btn:hover {
+.save-btn:hover {
     background-color: #333;
 }
+
+#successAlert {
+    display: none;
+}
+
 .navbar-custom {
     background-color: #F2EFE7;
 }

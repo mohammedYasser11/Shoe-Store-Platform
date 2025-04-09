@@ -1,38 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Profile</title>
-  <link rel="stylesheet" href="/client/src/CSS/profile.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .profile-box {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-
-    .profile-label {
-      font-weight: 600;
-      color: #666;
-      font-size: 0.9rem;
-    }
-
-    .profile-value {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
-    }
-
-    .edit-btn {
-      background-color: #000;
-      color: #fff;
-    }
-
-    .edit-btn:hover {
-      background-color: #333;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/client/src/CSS/editProfile.css">
 </head>
 <body class="bg-light">
 
@@ -80,37 +52,62 @@
     </div>
 </nav><!-- End of navbar -->
 
+<!-- Profile Section -->
 
 <div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
 
-      <div class="profile-box">
-        <h4 class="mb-4 text-center">My Profile</h4>
+        <div class="profile-section">
+            <h4 class="mb-4 text-center">Your Profile</h4>
 
-        <!-- User Info -->
-        <div>
-          <div class="profile-label">Full Name</div>
-          <div class="profile-value">John Doe</div>
+            <!-- Success Alert -->
+            <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+            Your profile has been updated successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
 
-          <div class="profile-label">Email</div>
-          <div class="profile-value">johndoe@email.com</div>
+            <form id="profileForm">
+            <!-- Full Name -->
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="fullName" value="John Doe">
+            </div>
 
-          <div class="profile-label">Phone</div>
-          <div class="profile-value">+1 234 567 890</div>
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="emailAddress" class="form-label">Email</label>
+                <input type="email" class="form-control" id="emailAddress" value="johndoe@email.com">
+            </div>
 
-          <div class="profile-label">Address</div>
-          <div class="profile-value">1234 Heaven Street, Beverly Hills, CA</div>
+            <!-- Phone -->
+            <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="phoneNumber" value="+1 234 567 890">
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password <small class="text-muted">(leave blank to keep current)</small></label>
+                <input type="password" class="form-control" id="password" placeholder="New password">
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" rows="3">1234 Heaven Street, Beverly Hills, CA</textarea>
+            </div>
+
+            <!-- Save Button -->
+            <div class="d-grid">
+                <button type="submit" class="btn save-btn">Save Changes</button>
+            </div>
+            </form>
+
         </div>
 
-        <!-- Edit Button -->
-        <div class="d-grid mt-4">
-          <a href="edit-profile.html" class="btn edit-btn">Edit Profile</a>
         </div>
-      </div>
-
     </div>
-  </div>
 </div>
 
 <!-- Footer -->
@@ -152,5 +149,22 @@
 <!-- End of footer -->
 
 
+<script>
+    document.getElementById('profileForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form submission
+
+        // Show success alert
+        const alert = document.getElementById('successAlert');
+        alert.style.display = 'block';
+
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+        const alertInstance = bootstrap.Alert.getOrCreateInstance(alert);
+        alertInstance.close();
+        }, 3000);
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
