@@ -1,0 +1,117 @@
+.navbar-custom {
+    background-color: #F2EFE7;
+}
+
+.navbar-custom .nav-link {
+    margin: 0 20px;
+    font-weight: 500;
+    color: #000;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+.navbar-custom .nav-link:hover {
+    background-color: #48A6A7;
+    color: #fff;
+}
+
+.navbar-custom .nav-link:active {
+    background-color: #006A71;
+    color: #fff;
+}
+
+.navbar-custom .btn-outline-dark:hover,
+.navbar-custom .btn-outline-success:hover {
+    background-color: #48A6A7;
+    border-color: #48A6A7;
+    color: #fff;
+}
+
+.navbar-custom .btn-outline-dark:active,
+.navbar-custom .btn-outline-success:active {
+    background-color: #006A71 !important;
+    border-color: #006A71 !important;
+    color: #fff !important;
+}
+
+.navbar-custom .form-control {
+    max-width: 180px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+.footer {
+    padding: 20px 0;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+.footer .social-icons i {
+    margin: 0 8px;
+    color: #666;
+    cursor: pointer;
+}
+.footer .nav-links a {
+    margin-left: 15px;
+    color: #000;
+    text-decoration: none;
+}
+.footer .nav-links a:hover {
+    text-decoration: underline;
+}
+
+.signup-btn {
+    background-color: #000;
+    color: #fff;
+  }
+
+  .create-account-btn {
+    background-color: #f3d965;
+    color: #000;
+  }
+
+  .btn-facebook {
+    background-color: #3b5998;
+    color: white;
+  }
+
+  .btn-google {
+    background-color: #db4437;
+    color: white;
+  }
+
+  .btn-facebook i,
+  .btn-google i {
+    margin-right: 6px;
+  }
+
+  .divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background-color: #ccc;
+  }
+
+  .divider::before {
+    left: 0;
+  }
+
+  .divider::after {
+    right: 0;
+  }
+
+  .divider span {
+    background-color: #fff;
+    padding: 0 10px;
+    color: #999;
+  }
