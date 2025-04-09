@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema({
     street: String
   },
 
+  phone: {
+    type: String,
+    unique: true
+  },
+
   createdAt: { type: Date, default: Date.now }
 });
 
