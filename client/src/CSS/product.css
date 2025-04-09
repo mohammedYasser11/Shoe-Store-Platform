@@ -1,0 +1,110 @@
+.color-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    border: 2px solid #ccc;
+}
+
+.color-option.active {
+    border-color: #000;
+}
+
+.size-option {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.size-option.active {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.suggested img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.navbar-custom {
+    background-color: #F2EFE7;
+}
+
+.navbar-custom .nav-link {
+    margin: 0 20px;
+    font-weight: 500;
+    color: #000;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+.navbar-custom .nav-link:hover {
+    background-color: #48A6A7;
+    color: #fff;
+}
+
+.navbar-custom .nav-link:active {
+    background-color: #006A71;
+    color: #fff;
+}
+
+.navbar-custom .btn-outline-dark:hover,
+.navbar-custom .btn-outline-success:hover {
+    background-color: #48A6A7;
+    border-color: #48A6A7;
+    color: #fff;
+}
+
+.navbar-custom .btn-outline-dark:active,
+.navbar-custom .btn-outline-success:active {
+    background-color: #006A71 !important;
+    border-color: #006A71 !important;
+    color: #fff !important;
+}
+
+.navbar-custom .form-control {
+    max-width: 180px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+.footer {
+    padding: 20px 0;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+.footer .social-icons i {
+    margin: 0 8px;
+    color: #666;
+    cursor: pointer;
+}
+.footer .nav-links a {
+    margin-left: 15px;
+    color: #000;
+    text-decoration: none;
+}
+.footer .nav-links a:hover {
+    text-decoration: underline;
+}
+.blog-title {
+    font-weight: 600;
+    margin-top: 15px;
+    font-size: 1.1rem;
+}
+.read-more {
+    text-decoration: underline;
+    font-weight: 500;
+    display: inline-block;
+    margin-top: 10px;
+}
+.view-all-btn {
+    margin-top: 40px;
+}
+.card-img-top {
+    object-fit: cover;
+}
