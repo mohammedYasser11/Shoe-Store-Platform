@@ -3,89 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/client/src/CSS/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <title>Bolghty - Home-page</title>
-    <style>
-        .navbar-custom {
-            background-color: #F2EFE7;
-        }
-
-        .navbar-custom .nav-link {
-            margin: 0 20px;
-            font-weight: 500;
-            color: #000;
-            transition: background-color 0.2s, color 0.2s;
-            border-radius: 5px;
-            padding: 8px 12px;
-        }
-
-        .navbar-custom .nav-link:hover {
-            background-color: #48A6A7;
-            color: #fff;
-        }
-
-        .navbar-custom .nav-link:active {
-            background-color: #006A71;
-            color: #fff;
-        }
-
-        .navbar-custom .btn-outline-dark:hover,
-        .navbar-custom .btn-outline-success:hover {
-            background-color: #48A6A7;
-            border-color: #48A6A7;
-            color: #fff;
-        }
-
-        .navbar-custom .btn-outline-dark:active,
-        .navbar-custom .btn-outline-success:active {
-            background-color: #006A71 !important;
-            border-color: #006A71 !important;
-            color: #fff !important;
-        }
-
-        .navbar-custom .form-control {
-            max-width: 180px;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-        }
-        .footer {
-            padding: 20px 0;
-            border-top: 1px solid #ddd;
-            background-color: #fff;
-        }
-        .footer .social-icons i {
-            margin: 0 8px;
-            color: #666;
-            cursor: pointer;
-        }
-        .footer .nav-links a {
-            margin-left: 15px;
-            color: #000;
-            text-decoration: none;
-        }
-        .footer .nav-links a:hover {
-            text-decoration: underline;
-        }
-        .blog-title {
-            font-weight: 600;
-            margin-top: 15px;
-            font-size: 1.1rem;
-        }
-        .read-more {
-            text-decoration: underline;
-            font-weight: 500;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        .view-all-btn {
-            margin-top: 40px;
-        }
-        .card-img-top {
-            object-fit: cover;
-        }
-    </style>
 </head>
 <body>
 <!-- Navbar -->
@@ -106,10 +26,10 @@
                 <a class="nav-link" href="#">Shop</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link" href="/client/src/pages/contact.html">Contact</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
+                <a class="nav-link" href="/client/src/pages/login.html">Profile</a>
             </li>
             </ul>
     
@@ -135,13 +55,13 @@
 <div id="carouselExample" class="carousel slide">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/client/src/assets/slide-show1.jpg" class="d-block mx-auto w-70" alt="...">
+            <img src="/client/src/assets/Banner1.jpg" class="d-block mx-auto w-70" alt="...">
         </div>
         <div class="carousel-item">
-            <img src="/client/src/assets/slide-show2.jpg" class="d-block mx-auto w-70" alt="...">
+            <img src="/client/src/assets/Banner2.png" class="d-block mx-auto w-70" alt="...">
         </div>
         <div class="carousel-item">
-            <img src="/client/src/assets/slide-show3.jpg" class="d-block mx-auto w-70" alt="...">
+            <img src="/client/src/assets/Banner3.jpg" class="d-block mx-auto w-70" alt="...">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -333,7 +253,7 @@
             <a href="#">About us</a>
             <a href="#">Blog</a>
             <a href="#">FAQs</a>
-            <a href="#">Contact</a>
+            <a href="/client/src/pages/contact.html">Contact</a>
         </div>
     </div>
 </footer>
