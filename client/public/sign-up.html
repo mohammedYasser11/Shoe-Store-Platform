@@ -8,6 +8,8 @@
 </head>
 <body class="bg-light">
 
+    <script src="./services/auth.js"></script>
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid">
@@ -56,7 +58,7 @@
     <div class="col-md-6 col-lg-5">
         <h3 class="mb-4">Create Account</h3>
 
-        <form>
+        <form id="signup-form"  action="" method="POST">
         <!-- Name -->
         <div class="mb-3">
             <label for="name" class="form-label">Full Name</label>
@@ -72,7 +74,7 @@
         <!-- Phone -->
         <div class="mb-3">
             <label for="phone" class="form-label">Phone Number</label>
-            <input type="tel" class="form-control" id="phone" placeholder="01234567890" pattern="[0-9]{11}" required>
+            <input type="tel" class="form-control" id="phone" placeholder="01234567890" pattern="[0-9]{11}">
         </div>
 
         <!-- Password -->
@@ -89,7 +91,7 @@
 
         <!-- Sign Up -->
         <div class="d-grid mb-3">
-            <button type="submit" class="btn signup-btn">Sign Up</button>
+            <button type="submit" class="btn signup-btn" action="">Sign Up</button>
         </div>
 
         <!-- Divider -->
