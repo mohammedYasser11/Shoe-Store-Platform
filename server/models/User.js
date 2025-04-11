@@ -37,8 +37,7 @@ const userSchema = new mongoose.Schema({
   },
 
   phone: {
-    type: String,
-    unique: true
+    type: String
   },
 
   createdAt: { type: Date, default: Date.now }
