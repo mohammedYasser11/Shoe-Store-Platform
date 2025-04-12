@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Login handler
 document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('login-form');
+  const loginForm = document.getElementById('loginForm');
 
   if (loginForm && window.location.pathname.includes('login.html')) {
     loginForm.addEventListener('submit', async (e) => {
