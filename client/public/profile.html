@@ -91,16 +91,16 @@
         <!-- User Info -->
         <div>
           <div class="profile-label">Full Name</div>
-          <div class="profile-value">John Doe</div>
+          <div class="profile-value" id="profileName">John Doe</div>
 
           <div class="profile-label">Email</div>
-          <div class="profile-value">johndoe@email.com</div>
+          <div class="profile-value" id="profileEmail">johndoe@email.com</div>
 
           <div class="profile-label">Phone</div>
-          <div class="profile-value">+1 234 567 890</div>
+          <div class="profile-value" id="profilePhone">+1 234 567 890</div>
 
           <div class="profile-label">Address</div>
-          <div class="profile-value">1234 Heaven Street, Beverly Hills, CA</div>
+          <div class="profile-value" id="profileAddress">1234 Heaven Street, Beverly Hills, CA</div>
         </div>
 
         <!-- Edit Button -->
@@ -200,6 +200,8 @@
 <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
+  <!-- Include dynamic profile loader script -->
+  <script src="./services/profile.js"></script>
 
 </body>
 </html>
