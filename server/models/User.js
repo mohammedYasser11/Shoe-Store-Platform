@@ -1,6 +1,7 @@
 // models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const addressSchema = require('./Address');
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
@@ -30,10 +31,8 @@ const userSchema = new mongoose.Schema({
   },
 
   address: {
-    country: String,
-    city: String,
-    zip: String,
-    street: String
+    type: addressSchema,
+    default: {}
   },
 
   phone: {
