@@ -1,3 +1,13 @@
+function setField(id, value) {
+  const el = document.getElementById(id);
+  if (!value) {
+    el.previousElementSibling.style.display = 'none'; // hide label
+    el.style.display = 'none';                         // hide value
+  } else {
+    el.innerText = value;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Check if token exists; if not, redirect to login
   const token = localStorage.getItem('token');
@@ -29,21 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('profileName').innerText = userData.name || 'N/A';
       document.getElementById('profileEmail').innerText = userData.email || 'N/A';
       // For phone, check if a valid value exists; if not, hide its container.
-      if (userData.phone && userData.phone !== "N/A") {
-        document.getElementById('profilePhone').innerText = userData.phone;
-      } else {
-        // Hide the entire phone field container, if you wrapped it.
-        const phoneContainer = document.getElementById("profilePhoneContainer");
-        if (phoneContainer) phoneContainer.style.display = 'none';
-      }
+      setField('profilePhone', userData.phone);
 
-      // For address, do the same:
-      if (userData.address && userData.address !== "N/A") {
-        document.getElementById('profileAddress').innerText = userData.address;
-      } else {
-        const addressContainer = document.getElementById("profileAddressContainer");
-        if (addressContainer) addressContainer.style.display = 'none';
-      }
+      // For address, check if a valid value exists; if not, hide its container.
+      const address = userData.address || {};
+      setField('profileCountry', address.country);
+      setField('profileCity',    address.city);
+      setField('profileZip',     address.zip);
+      setField('profileStreet',  address.street);
     }
   })
   .catch(err => {
