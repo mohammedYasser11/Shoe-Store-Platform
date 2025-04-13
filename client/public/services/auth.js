@@ -10,15 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const phone = document.getElementById('phone').value;
+      const address = {
+        country: document.getElementById('country').value.trim(),
+        city:    document.getElementById('city').value.trim(),
+        zip:     document.getElementById('zip').value.trim(),
+        street:  document.getElementById('street').value.trim()
+      };
 
       try {
         const res = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, password, phone })
+          body: JSON.stringify({ name, email, password, phone, address })
         });
 
-        console.log({ name, email, password, phone });
 
 
         const data = await res.json();
