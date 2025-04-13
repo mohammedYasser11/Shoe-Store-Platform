@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (res.ok) {
           localStorage.setItem('token', data.token);
-          window.location.href = 'index.html'; // redirect after login
+          window.location.href = 'profile.html'; // redirect after login
         } else {
           alert(data.message || 'Login failed');
         }
