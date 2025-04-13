@@ -1,0 +1,17 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .card-body {
+    flex-grow: 1; /* This makes the card body expand to fill available space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes content to the top and bottom */
+  }
+  
+  .card-title {
+    min-height: 50px; /* Ensures the title doesn't shrink */
+  }
+  
