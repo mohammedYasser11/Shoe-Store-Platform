@@ -34,7 +34,13 @@
                 <a class="nav-link" href="login.html">Profile</a>
             </li>
             </ul>
-    
+            <div class="d-flex align-items-center" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li>
+                        <a class="nav-link" href="./login.html">Login</a>
+                    </li>
+                </ul>
+            </div>
             <!-- Cart Button -->
             <button class="btn btn-outline-dark ms-3 me-2" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#cartSidebar" aria-controls="cartSidebar">
@@ -61,13 +67,17 @@
         <form id="signup-form"  action="" method="POST">
         <!-- Name -->
         <div class="mb-3">
-            <label for="name" class="form-label">Full Name</label>
+            <label for="name" class="form-label">Full Name
+            <span class="text-danger">*</span>
+            </label>
             <input type="text" class="form-control" id="name" placeholder="Your Name" required>
         </div>
 
         <!-- Email -->
         <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">Email
+                <span class="text-danger">*</span>
+            </label>
             <input type="email" class="form-control" id="email" placeholder="Email" required>
         </div>
 
@@ -97,13 +107,17 @@
 
         <!-- Password -->
         <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
+            <label for="password" class="form-label">Password
+                <span class="text-danger">*</span>
+            </label>
             <input type="password" class="form-control" id="password" placeholder="Password" required>
         </div>
 
         <!-- Confirm Password -->
         <div class="mb-3">
-            <label for="confirm-password" class="form-label">Confirm Password</label>
+            <label for="confirm-password" class="form-label">Confirm Password
+                <span class="text-danger">*</span>
+            </label>
             <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password" required>
         </div>
 

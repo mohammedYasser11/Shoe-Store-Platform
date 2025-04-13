@@ -32,7 +32,13 @@
                 <a class="nav-link" href="./login.html">Profile</a>
             </li>
             </ul>
-    
+            <div class="d-flex align-items-center" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li>
+                        <a class="nav-link" href="./login.html">Login</a>
+                    </li>
+                </ul>
+            </div>
             <!-- Cart Button -->
             <button class="btn btn-outline-dark ms-3 me-2" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#cartSidebar" aria-controls="cartSidebar">
@@ -77,7 +83,7 @@
             <!-- Email -->
             <div class="mb-3">
                 <label for="emailAddress" class="form-label">Email</label>
-                <input type="email" class="form-control" id="emailAddress" value="johndoe@email.com">
+                <input style="background-color: grey;" type="email" class="form-control" id="emailAddress" value="johndoe@email.com" readonly>
             </div>
 
             <!-- Phone -->
@@ -85,27 +91,34 @@
                 <label for="phoneNumber" class="form-label">Phone</label>
                 <input type="tel" class="form-control" id="phoneNumber" value="+1 234 567 890">
             </div>
-
             <!-- Password -->
             <div class="mb-3">
                 <label for="password" class="form-label">Password <small class="text-muted">(leave blank to keep current)</small></label>
                 <input type="password" class="form-control" id="password" placeholder="New password">
             </div>
-
             <!-- Address -->
             <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <textarea class="form-control" id="address" rows="3">1234 Heaven Street, Beverly Hills, CA</textarea>
+                <label for="country" class="form-label">Country</label>
+                <input type="text" class="form-control" id="country" placeholder="Your Country">
             </div>
-
+            <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" placeholder="Your City">
+            </div>
+            <div class="mb-3">
+                <label for="zip" class="form-label">ZIP Code</label>
+                <input type="text" class="form-control" id="zip" placeholder="Your ZIP Code">
+            </div>
+            <div class="mb-3">
+                <label for="street" class="form-label">Street</label>
+                <input type="text" class="form-control" id="street" placeholder="Your Street">
+            </div>
             <!-- Save Button -->
             <div class="d-grid">
                 <button type="submit" class="btn save-btn">Save Changes</button>
             </div>
             </form>
-
         </div>
-
         </div>
     </div>
 </div>
