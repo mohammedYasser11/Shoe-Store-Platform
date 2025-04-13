@@ -7,16 +7,16 @@ const generateToken = (id) => {
 };
 
 exports.registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone, address } = req.body;
 
   try {
     const existing = await User.findOne({ email });
     if (existing) return res.status(400).json({ message: 'Email already in use' });
 
-    const user = await User.create({ name, email, password });
+    const user = await User.create({ name, email, password, phone,address });
 
     res.status(201).json({
-      user: { id: user._id, name: user.name, email: user.email },
+      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, address: user.address },
       token: generateToken(user._id)
     });
   } catch (err) {
@@ -35,7 +35,7 @@ exports.loginUser = async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     res.json({
-      user: { id: user._id, name: user.name, email: user.email },
+      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, address: user.address },
       token: generateToken(user._id)
     });
   } catch (err) {
