@@ -1,25 +1,52 @@
 /* General Body Styling */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
 }
 
-/* Product Detail Container */
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #fff;
+    border-right: 1px solid #dee2e6;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    z-index: 10;
+    /* Ensure the sidebar stays fixed */
+}
+
+.sidebar .nav-link {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: #f3f3f3;
+}
+
+/* Main Product Detail Container */
 .product-detail-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 40px;
     max-width: 1200px;
     margin: 40px auto;
     background-color: white;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 270px;
+    /* Add space for sidebar */
 }
 
-/* Product Image */
+/* Product Image Styling */
 .product-image {
     max-width: 400px;
     height: auto;
@@ -29,7 +56,8 @@ body {
 
 /* Product Info Section */
 .product-info {
-    width: 50%;
+    width: 55%;
+    /* Adjust width of the product info */
     margin-left: 40px;
 }
 
@@ -57,7 +85,8 @@ label {
 }
 
 /* Select Box Styling */
-select, input[type="number"] {
+select,
+input[type="number"] {
     width: 100%;
     padding: 12px;
     font-size: 16px;
@@ -69,7 +98,8 @@ select, input[type="number"] {
 }
 
 /* Hover effect for select/input */
-select:focus, input[type="number"]:focus {
+select:focus,
+input[type="number"]:focus {
     border-color: #007bff;
     outline: none;
 }
@@ -96,6 +126,7 @@ button:hover {
     .product-detail-container {
         flex-direction: column;
         align-items: center;
+        padding: 20px;
     }
 
     .product-info {
