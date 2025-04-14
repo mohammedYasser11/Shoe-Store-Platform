@@ -1,0 +1,113 @@
+[
+{
+    "name": "Atlanticus",
+    "brand": "Adlo",
+    "description": "Classic cushioning and bold design made for everyday comfort.",
+    "category": "women",
+    "price": 130,
+    "discount": 10,
+    "images": [
+    "/client/public/assists/images/Atlanticus - black.jpg",
+    "/client/public/assists/images/Atlanticus - pink.jpg",
+    "/client/public/assists/images/Atlanticus - white.jpg"
+    ],
+    "colors": ["Black", "Pink", "White"],
+    "sizes": ["40", "41", "42", "43", "44"],
+    "stock": 25,
+    "tags": ["running", "sneakers", "trending"],
+    "isFeatured": true,
+    "createdAt": "2024-03-01T10:20:00Z"
+},
+{
+    "name": "Enchanting",
+    "brand": "Aldo",
+    "description": "Responsive and stylish shoes built for performance.",
+    "category": "women",
+    "price": 180,
+    "discount": 15,
+    "images": [
+    "/client/public/assists/images/Enchanting - black.jpg",
+    "/client/public/assists/images/Enchanting - pink.jpg"
+    ],
+    "colors": ["Pink", "Black"],
+    "sizes": ["36", "37", "38", "39", "40"],
+    "stock": 40,
+    "tags": ["performance", "boost", "adidas"],
+    "isFeatured": true,
+    "createdAt": "2024-03-05T15:00:00Z"
+},
+{
+    "name": "FITZPATRICK",
+    "brand": "Puma",
+    "description": "Bold color blocking and chunky silhouette inspired by 90s design.",
+    "category": "men",
+    "price": 110,
+    "discount": 0,
+    "images": [
+    "/client/public/assists/images/Fitzpatrick - black.jpg",
+    "/client/public/assists/images/Fitzpatrick - bLue.jpg",
+    "/client/public/assists/images/Fitzpatrick - brown.jpg"
+    ],
+    "colors": ["Blue", "Brown", "Black"],
+    "sizes": ["41", "42", "43", "44"],
+    "stock": 18,
+    "tags": ["casual", "chunky", "retro"],
+    "isFeatured": false,
+    "createdAt": "2024-02-25T08:45:00Z"
+},
+{
+    "name": "Sake",
+    "brand": "Puma",
+    "description": "Bold color blocking and chunky silhouette inspired by 90s design.",
+    "category": "men",
+    "price": 110,
+    "discount": 0,
+    "images": [
+    "/client/public/assists/images/Sake - black.jpg",
+    "/client/public/assists/images/Sake - brown.jpg"
+    ],
+    "colors": ["Brown", "Black"],
+    "sizes": ["41", "42", "43", "44"],
+    "stock": 18,
+    "tags": ["casual", "chunky", "retro"],
+    "isFeatured": false,
+    "createdAt": "2024-02-25T08:45:00Z"
+},
+{
+    "name": "UPTOWN",
+    "brand": "Puma",
+    "description": "Bold color blocking and chunky silhouette inspired by 90s design.",
+    "category": "men",
+    "price": 110,
+    "discount": 0,
+    "images": [
+    "/client/public/assists/images/UPTOWN - green.jpg",
+    "/client/public/assists/images/UPTOWN - white.jpg",
+    "/client/public/assists/images/UPTOWN - grey.jpg"
+    ],
+    "colors": ["Green", "Grey", "White"],
+    "sizes": ["41", "42", "43", "44"],
+    "stock": 18,
+    "tags": ["casual", "chunky", "retro"],
+    "isFeatured": false,
+    "createdAt": "2024-02-25T08:45:00Z"
+},
+{
+    "name": "PAXLEY",
+    "brand": "New Balance",
+    "description": "A timeless, heritage-inspired sneaker with comfort and support.",
+    "category": "unisex",
+    "price": 85,
+    "discount": 5,
+    "images": [
+    "/client/public/assists/images/Paxley - black.jpg",
+    "/client/public/assists/images/Paxley - brown.jpg"
+    ],
+    "colors": ["Black", "Brown"],
+    "sizes": ["38", "39", "40", "41", "42", "43"],
+    "stock": 50,
+    "tags": ["classic", "lifestyle", "unisex"],
+    "isFeatured": false,
+    "createdAt": "2024-04-01T11:30:00Z"
+}
+]
