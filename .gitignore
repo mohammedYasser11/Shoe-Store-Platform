@@ -15,6 +15,8 @@ package-lock.json
 # Build files
 build/
 dist/
+seedFromLocal.js
+data/
 
 # Logs
 *.log

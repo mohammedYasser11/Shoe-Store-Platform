@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
 const path = require('path');
 
 // Serve static files from the client/public folder
@@ -18,6 +19,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users',userRoutes );
+app.use('/api/products', productRoutes);
 
 
 // Health check route
