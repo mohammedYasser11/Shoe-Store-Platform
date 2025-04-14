@@ -97,10 +97,11 @@ async function fetchShoes() {
       result.forEach(p => {
         const col = document.createElement('div');
         col.className = 'col';
+        console.log(p)
         col.innerHTML = `
           <div class="card h-100">
             <img
-              src="${p.image || '/assets/images/placeholder.png'}"
+              src="${p.images[0] || '/assets/images/placeholder.png'}"
               class="card-img-top"
               alt="${p.name}"
             >
@@ -123,4 +124,4 @@ async function fetchShoes() {
   }
 }
 
-fetchShoes();
+// fetchShoes();
