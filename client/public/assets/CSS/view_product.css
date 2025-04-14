@@ -1,0 +1,117 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Container for the product detail */
+.product-detail-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 1200px;
+    border-radius: 10px;
+}
+
+/* Styling the product image */
+.product-image {
+    max-width: 350px;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Styling the product information section */
+.product-info {
+    margin-left: 30px;
+    width: 50%;
+}
+
+/* Product Name and Price */
+.product-info h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.product-info p strong {
+    color: #333;
+}
+
+/* Dropdown menus for Size and Color */
+select {
+    font-size: 16px;
+    padding: 8px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 120px;
+}
+
+/* Resupply Quantity Section */
+.resupply-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.resupply-container label {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.resupply-container input {
+    padding: 8px;
+    width: 60px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 15px;
+}
+
+/* Resupply Button Styling */
+.resupply-container button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.resupply-container button:hover {
+    background-color: #45a049;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .product-detail-container {
+        flex-direction: column;
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .product-info {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .product-image {
+        max-width: 100%;
+        max-height: 300px;
+    }
+}

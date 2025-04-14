@@ -1,0 +1,74 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.product-card {
+    width: 200px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: white;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+}
+
+.view-button {
+    display: block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.view-button:hover {
+    background-color: #0056b3;
+}
+
+.product-detail-container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    background-color: white;
+}
+
+.product-info {
+    max-width: 400px;
+}
+
+.resupply-container {
+    margin-top: 20px;
+}
+
+.resupply-container input {
+    width: 50px;
+    margin-right: 10px;
+}
+
+.resupply-container button {
+    padding: 5px 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.resupply-container button:hover {
+    background-color: darkgreen;
+}

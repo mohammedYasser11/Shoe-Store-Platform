@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <link rel="stylesheet" href="/client/public/assets/CSS/view_product.css">
+</head>
+<body>
+    <div class="product-detail-container">
+        <img src="/client/public/assets/images/product 1.jpg" alt="Product Image" class="product-image">
+        
+        <div class="product-info">
+            <h2>White Sandle</h2>
+            <p><strong>Price:</strong> $99.99</p>
+            <p><strong>Available Quantity:</strong> <span id="product-quantity">50</span></p>
+            
+            <p><strong>Size:</strong>
+                <select id="product-size">
+                    <option value="38">38</option>
+                    <option value="39">39</option>
+                    <option value="40">40</option>
+                    <option value="41">41</option>
+                </select>
+            </p>
+
+            <p><strong>Color:</strong>
+                <select id="product-color">
+                    <option value="Black">Black</option>
+                    <option value="White">White</option>
+                    <option value="Red">Red</option>
+                </select>
+            </p>
+
+            <div class="resupply-container">
+                <label for="resupply-quantity">Resupply Quantity:</label>
+                <input type="number" id="resupply-quantity" min="1" max="100" value="1">
+                <button onclick="resupplyProduct()">Resupply</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/client/public/services/view_product.js"></script>
+</body>
+</html>
