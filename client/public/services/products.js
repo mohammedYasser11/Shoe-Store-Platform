@@ -1,61 +1,126 @@
-const container = document.getElementById("shoe-products");
+document.addEventListener('DOMContentLoaded', () => {
+  const container   = document.getElementById('shoe-products');
+  const errorDiv    = document.getElementById('productsError');
+  const searchForm  = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
 
-// Helper function to create a product card with "Add to Cart" button
-function createCard({ image, title, price, brand, description }) {
-  const col = document.createElement("div");
-  col.className = "col";
-  col.innerHTML = `
-    <div class="card h-100 text-center">
-      <img src="${image}" class="card-img-top p-3" style="height: 300px; object-fit: contain;" alt="${title}">
-      <div class="card-body">
-        <h6 class="card-title">${title}</h6>
-        <p class="mb-1 fw-bold text-danger">$${price}</p>
-        <button class="btn btn-primary add-to-cart">Add to Cart</button>
-      </div>
-    </div>
-  `;
-  container.appendChild(col);
+  // Fetch and render products, optionally filtered by `searchTerm`
+  async function loadProducts(searchTerm = '') {
+    try {
+      // hide previous errors
+      errorDiv.classList.add('d-none');
+      errorDiv.innerText = '';
 
-  // Handle "Add to Cart" button click
-  const addToCartButton = col.querySelector(".add-to-cart");
-  addToCartButton.addEventListener("click", () => {
-    alert(`${title} added to cart!`);
-  });
-}
+      // build URL
+      let url = '/api/products';
+      if (searchTerm) {
+        url += `?search=${encodeURIComponent(searchTerm)}`;
+      }
 
-// Fetch shoes from Shoes Collections API
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const products = await res.json();
+      container.innerHTML = '';
+
+      if (products.length === 0) {
+        container.innerHTML = `
+          <div class="col-12">
+            <p class="text-center">No products found.</p>
+          </div>`;
+        return;
+      }
+
+      products.forEach(p => {
+        const col = document.createElement('div');
+        col.className = 'col';
+        col.innerHTML = `
+          <div class="card h-100">
+            <img
+              src="${(p.images && p.images.length) ? p.images[0] : '/assets/images/placeholder.png'}"
+              class="card-img-top"
+              alt="${p.name}"
+            >
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">${p.name}</h5>
+              <p class="card-text text-muted mb-4">$${p.price.toFixed(2)}</p>
+              <a href="product.html?id=${p._id}"
+                class="mt-auto btn btn-sm btn-outline-primary">
+                View
+              </a>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+
+    } catch (err) {
+      console.error('Failed to load products:', err);
+      errorDiv.innerText = 'Could not load products. Please try again later.';
+      errorDiv.classList.remove('d-none');
+    }
+  }
+
+  // initial load (no filter)
+  loadProducts();
+
+  // wire up your navbar search if you have one
+
+  if (searchForm && searchInput) {
+    searchForm.addEventListener('submit', e => {
+      e.preventDefault();
+      loadProducts(searchInput.value.trim());
+    });
+  }
+});
+
+
 async function fetchShoes() {
+  const container = document.getElementById('shoe-products');
+
   const url = 'https://shoes-collections.p.rapidapi.com/shoes';
   const options = {
     method: 'GET',
     headers: {
-      'x-rapidapi-key': 'b587a4f868msh8044de689478b9dp1ae81cjsneb90f45aca80',
+      'x-rapidapi-key': '6597f2d7bamshd3f3f067586b5b5p145779jsn8ab5ac530a58',
       'x-rapidapi-host': 'shoes-collections.p.rapidapi.com'
     }
   };
 
   try {
     const response = await fetch(url, options);
-    const result = await response.json(); // Assuming the response is in JSON format
+    const result = await response.json();
 
-    // Check if we received data and loop through it
+    container.innerHTML = ''; // clear previous content
+
     if (Array.isArray(result) && result.length > 0) {
-      result.forEach(product => {
-        createCard({
-          image: product.image, 
-          title: product.name, 
-          price: product.price,
-          brand: product.brand,  
-          description: product.description 
-        });
+      result.forEach(p => {
+        const col = document.createElement('div');
+        col.className = 'col';
+        col.innerHTML = `
+          <div class="card h-100">
+            <img
+              src="${p.image || '/assets/images/placeholder.png'}"
+              class="card-img-top"
+              alt="${p.name}"
+            >
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">${p.name}</h5>
+              <p class="card-text text-muted mb-4">${p.brand || ''}</p>
+              <p class="card-text text-muted mb-2">${p.price || ''}</p>
+              <a href="#" class="mt-auto btn btn-sm btn-outline-primary">View</a>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
       });
     } else {
-      console.error("No products found in the response.");
+      container.innerHTML = '<div class="col-12 text-center">No products found.</div>';
     }
   } catch (error) {
     console.error('Error fetching shoes:', error);
+    container.innerHTML = '<div class="col-12 text-danger text-center">Failed to load shoes.</div>';
   }
 }
 
-// Call the function to fetch and display the shoes data
 fetchShoes();

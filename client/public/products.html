@@ -54,8 +54,8 @@
                 </svg>
                 </button>
                 <!-- Search Form -->
-                <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form id="searchForm" class="d-flex" role="search">
+              <input id="searchInput"class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
               </form>
             </div>
@@ -77,7 +77,10 @@
       <!-- Products display area -->
       <div class="col-md-9">
         <h1 class="text-center mt-5">All Products</h1>
-        <div id="shoe-products" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"></div>
+      <!-- error / empty‑state container -->
+      <div id="productsError" class="alert alert-danger d-none"></div>
+      <!-- product cards will go here -->
+      <div id="shoe-products" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"></div>
       </div>
     </div>
   </div>

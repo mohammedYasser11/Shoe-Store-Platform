@@ -1,22 +1,32 @@
-// models/Product.js
+// server/models/Product.js
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  brand: String,
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
   description: String,
-  category: { type: String, required: true }, // e.g., men's, women's
-  price: { type: Number, required: true },
-  discount: { type: Number, default: 0 }, // percent off
-  images: [String],
-  colors: [String],
-  sizes: [String],
-
-  stock: { type: Number, required: true },
-  tags: [String],
-
-  isFeatured: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now }
-});
+  category: String,
+  brand: String,
+  price: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  images: [String],        // URLs
+  colors: [String],        // e.g. ["red","black"]
+  sizes: [String],         // e.g. ["42","43"]
+  stock: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);
