@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #fff;
+      border-right: 1px solid #dee2e6;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+    }
+
+    .sidebar .nav-link {
+      color: #333;
+      font-weight: 500;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      background-color: #f3f3f3;
+    }
+
+    .main-content {
+      margin-left: 270px;
+      padding: 30px 20px;
+    }
+
+    th[style*="cursor"] {
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar d-flex flex-column">
+    <h4 class="mb-4 fw-bold">Admin Panel</h4>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+      <a class="nav-link" href="#"><i class="bi bi-people me-2"></i> User Management</a>
+      <a class="nav-link active" href="order_management.html"><i class="bi bi-bag-check me-2"></i> Order Management</a>
+      <a class="nav-link" href="#"><i class="bi bi-box-seam me-2"></i> Inventory Management</a>
+      <a class="nav-link mt-auto text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold">Order Management</h2>
+      <a href="../index.html" class="btn btn-dark">Go to Website</a>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row g-2 mb-3">
+      <div class="col-md-8">
+        <input type="text" id="orderSearch" class="form-control" placeholder="Search by Order ID, Customer Name, Date, or Total..." />
+      </div>
+      <div class="col-md-4">
+        <select id="statusFilter" class="form-select">
+          <option value="All" selected>Filter by Status (All)</option>
+          <option value="Pending">Pending</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <table class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Order ID</th>
+              <th id="sortCustomer" style="cursor: pointer;">Customer <i class="bi bi-chevron-expand"></i></th>
+              <th id="sortDate" style="cursor: pointer;">Date <i class="bi bi-chevron-expand"></i></th>
+              <th id="sortTotal" style="cursor: pointer;">Total <i class="bi bi-chevron-expand"></i></th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orderTableBody">
+            <tr><td>#1001</td><td>Jane Doe</td><td>2025-04-15</td><td>$120.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1002</td><td>Mark Smith</td><td>2025-04-14</td><td>$89.00</td>
+              <td><select class="form-select form-select-sm"><option selected>Pending</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1003</td><td>Emily Johnson</td><td>2025-04-13</td><td>$200.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option>Shipped</option><option selected>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1004</td><td>Luke Carter</td><td>2025-04-13</td><td>$45.99</td>
+              <td><select class="form-select form-select-sm"><option selected>Pending</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1005</td><td>Sarah Lee</td><td>2025-04-12</td><td>$150.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option>Shipped</option><option>Delivered</option><option selected>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1006</td><td>David Kim</td><td>2025-04-12</td><td>$60.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1007</td><td>Natalie Green</td><td>2025-04-11</td><td>$180.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1008</td><td>Chris Evans</td><td>2025-04-10</td><td>$78.50</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1009</td><td>Isabella Moore</td><td>2025-04-10</td><td>$102.00</td>
+              <td><select class="form-select form-select-sm"><option selected>Pending</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1010</td><td>Tom Hardy</td><td>2025-04-09</td><td>$250.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1011</td><td>Lisa Adams</td><td>2025-04-09</td><td>$76.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1012</td><td>Michael Brown</td><td>2025-04-08</td><td>$135.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1013</td><td>Sophia Turner</td><td>2025-04-08</td><td>$199.99</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1014</td><td>Brian Scott</td><td>2025-04-07</td><td>$59.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option selected>Shipped</option><option>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+            <tr><td>#1015</td><td>Ava White</td><td>2025-04-06</td><td>$312.00</td>
+              <td><select class="form-select form-select-sm"><option>Pending</option><option>Shipped</option><option selected>Delivered</option><option>Cancelled</option></select></td>
+              <td><button class="btn btn-outline-success btn-sm send-confirmation"><i class="bi bi-envelope-fill"></i> Confirm</button><button class="btn btn-outline-danger btn-sm issue-refund"><i class="bi bi-arrow-counterclockwise"></i> Refund</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="text-center text-muted py-4" style="display: none;">
+          <i class="bi bi-search"></i> No orders found
+        </div>
+
+        <!-- Pagination -->
+        <nav class="mt-3 d-flex justify-content-center">
+          <ul class="pagination" id="pagination"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const searchInput = document.getElementById('orderSearch');
+    const statusFilter = document.getElementById('statusFilter');
+    const noResults = document.getElementById('noResults');
+    const table = document.getElementById('orderTableBody');
+    const pagination = document.getElementById('pagination');
+
+    let currentPage = 1;
+    const rowsPerPage = 10;
+
+    function getFilteredRows() {
+      const searchValue = searchInput.value.trim().toLowerCase();
+      const selectedStatus = statusFilter.value;
+
+      return Array.from(table.querySelectorAll('tr')).filter(row => {
+        const orderId = row.children[0].textContent.toLowerCase();
+        const customer = row.children[1].textContent.toLowerCase();
+        const date = row.children[2].textContent.toLowerCase();
+        const total = row.children[3].textContent.toLowerCase();
+        const status = row.children[4].querySelector('select').value;
+
+        const matchesSearch =
+          orderId.includes(searchValue) ||
+          customer.includes(searchValue) ||
+          date.includes(searchValue) ||
+          total.includes(searchValue);
+
+        const matchesStatus = selectedStatus === 'All' || status === selectedStatus;
+
+        return matchesSearch && matchesStatus;
+      });
+    }
+
+    function bindActionButtons() {
+      document.querySelectorAll('.send-confirmation').forEach(button => {
+        button.onclick = () => {
+          const orderId = button.closest('tr').children[0].textContent;
+          alert(`📨 Confirmation sent for Order ${orderId}`);
+        };
+      });
+
+      document.querySelectorAll('.issue-refund').forEach(button => {
+        button.onclick = () => {
+          const orderId = button.closest('tr').children[0].textContent;
+          const confirmRefund = confirm(`⚠️ Are you sure you want to refund Order ${orderId}?`);
+          if (confirmRefund) {
+            alert(`💸 Order ${orderId} has been refunded.`);
+          }
+        };
+      });
+    }
+
+    function displayTable() {
+      const rows = Array.from(table.querySelectorAll('tr'));
+      rows.forEach(row => row.style.display = 'none');
+
+      const filtered = getFilteredRows();
+      const start = (currentPage - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+
+      filtered.slice(start, end).forEach(row => row.style.display = '');
+      noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+
+      renderPagination(filtered.length);
+      bindActionButtons();
+    }
+
+    function renderPagination(totalRows) {
+      const totalPages = Math.ceil(totalRows / rowsPerPage);
+      pagination.innerHTML = '';
+
+      if (totalPages <= 1) return;
+
+      const createPage = (label, page, disabled = false, active = false) => {
+        const li = document.createElement('li');
+        li.className = `page-item ${disabled ? 'disabled' : ''} ${active ? 'active' : ''}`;
+        const a = document.createElement('a');
+        a.className = 'page-link';
+        a.href = '#';
+        a.textContent = label;
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (!disabled) {
+            currentPage = page;
+            displayTable();
+          }
+        });
+        li.appendChild(a);
+        pagination.appendChild(li);
+      };
+
+      createPage('«', currentPage - 1, currentPage === 1);
+
+      for (let i = 1; i <= totalPages; i++) {
+        createPage(i, i, false, currentPage === i);
+      }
+
+      createPage('»', currentPage + 1, currentPage === totalPages);
+    }
+
+    function sortTableByColumn(columnIndex, dataType = 'string') {
+      const rows = Array.from(table.querySelectorAll('tr'));
+      const currentSort = table.getAttribute(`data-sort-${columnIndex}`) || 'asc';
+      const newSort = currentSort === 'asc' ? 'desc' : 'asc';
+
+      rows.sort((a, b) => {
+        let aText = a.children[columnIndex].textContent.trim();
+        let bText = b.children[columnIndex].textContent.trim();
+
+        if (dataType === 'number') {
+          aText = parseFloat(aText.replace(/[^0-9.]/g, '')) || 0;
+          bText = parseFloat(bText.replace(/[^0-9.]/g, '')) || 0;
+        } else if (dataType === 'date') {
+          aText = new Date(aText);
+          bText = new Date(bText);
+        } else {
+          aText = aText.toLowerCase();
+          bText = bText.toLowerCase();
+        }
+
+        return newSort === 'asc' ? (aText > bText ? 1 : -1) : (aText < bText ? 1 : -1);
+      });
+
+      rows.forEach(row => table.appendChild(row));
+      table.setAttribute(`data-sort-${columnIndex}`, newSort);
+
+      document.querySelectorAll('th i.bi').forEach(icon => icon.className = 'bi bi-chevron-expand');
+      const icon = document.querySelector(`th:nth-child(${columnIndex + 1}) i`);
+      icon.className = newSort === 'asc' ? 'bi bi-chevron-up' : 'bi bi-chevron-down';
+
+      currentPage = 1;
+      displayTable();
+    }
+
+    document.getElementById('sortCustomer').addEventListener('click', () => sortTableByColumn(1));
+    document.getElementById('sortDate').addEventListener('click', () => sortTableByColumn(2, 'date'));
+    document.getElementById('sortTotal').addEventListener('click', () => sortTableByColumn(3, 'number'));
+
+    searchInput.addEventListener('input', () => {
+      currentPage = 1;
+      displayTable();
+    });
+
+    statusFilter.addEventListener('change', () => {
+      currentPage = 1;
+      displayTable();
+    });
+
+    // Initial render
+    displayTable();
+  </script>
+</body>
+</html>
