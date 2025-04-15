@@ -26,37 +26,47 @@
         </nav>
     </div>
 
-    <div class="product-detail-container">
-        <img src="/client/public/assets/images/Enchanting-blue.jpg" alt="Product Image" class="product-image">
-        <div class="product-info">
-            <h2>White Sandle</h2>
-            <p><strong>Price:</strong> $99.99</p>
-            <p><strong>Available Quantity:</strong> <span id="product-quantity">50</span></p>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Restock Label with Icon -->
+        <div class="restock-label">
+            <i class="bi bi-box-arrow-up-right me-2" class="fw-bold"></i> <span>Restock Product</span>
+        </div>
 
-            <p><strong>Size:</strong>
-                <select id="product-size">
-                    <option value="38">38</option>
-                    <option value="39">39</option>
-                    <option value="40">40</option>
-                    <option value="41">41</option>
-                </select>
-            </p>
+        <!-- Product Detail Container -->
+        <div class="product-detail-container">
+            <img src="/client/public/assets/images/Enchanting-blue.jpg" alt="Product Image" class="product-image">
+            <div class="product-info">
+                <h2>White Sandle</h2>
+                <p><strong>Price:</strong> $99.99</p>
+                <p><strong>Available Quantity:</strong> <span id="product-quantity">50</span></p>
 
-            <p><strong>Color:</strong>
-                <select id="product-color">
-                    <option value="Black">Black</option>
-                    <option value="White">White</option>
-                    <option value="Red">Red</option>
-                </select>
-            </p>
+                <p><strong>Size:</strong>
+                    <select id="product-size">
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                    </select>
+                </p>
 
-            <div class="resupply-container">
-                <p><strong>Quantity:</strong></p>
-                <input type="number" id="resupply-quantity" min="1" max="100" value="1">
-                <button onclick="resupplyProduct()">Restock</button>
+                <p><strong>Color:</strong>
+                    <select id="product-color">
+                        <option value="Black">Black</option>
+                        <option value="White">White</option>
+                        <option value="Red">Red</option>
+                    </select>
+                </p>
+
+                <div class="resupply-container">
+                    <p><strong>Quantity:</strong></p>
+                    <input type="number" id="resupply-quantity" min="1" max="100" value="1">
+                    <button onclick="resupplyProduct()">Restock</button>
+                </div>
             </div>
         </div>
     </div>
+
 
     <script src="/client/public/services/view_product.js"></script>
 </body>

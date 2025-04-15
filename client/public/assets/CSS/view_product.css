@@ -1,11 +1,8 @@
 /* General Body Styling */
 body {
     background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
 }
 
-/* Sidebar Styling */
 .sidebar {
     width: 250px;
     height: 100vh;
@@ -15,8 +12,6 @@ body {
     top: 0;
     left: 0;
     padding: 20px;
-    z-index: 10;
-    /* Ensure the sidebar stays fixed */
 }
 
 .sidebar .nav-link {
@@ -31,7 +26,6 @@ body {
     background-color: #f3f3f3;
 }
 
-/* Main Product Detail Container */
 .product-detail-container {
     display: flex;
     justify-content: space-between;
@@ -145,4 +139,22 @@ button:hover {
     .product-info h2 {
         font-size: 24px;
     }
+}
+
+
+/* Restock Label */
+.restock-label {
+    display: flex;
+    align-items: center;
+    margin-left: 270px;
+    /* Align with the sidebar */
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    font-size: x-large;
+}
+
+.restock-label i {
+    margin-right: 10px;
 }
