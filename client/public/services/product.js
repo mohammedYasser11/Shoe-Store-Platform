@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
       };
+      
       const setupAddToCart = () => {
         const form = document.getElementById('addToCartForm');
         form.addEventListener('submit', async (e) => {
