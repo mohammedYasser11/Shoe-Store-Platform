@@ -1,4 +1,5 @@
 const Cart = require('../models/Cart');
+const Product = require('../models/Product'); 
 
 exports.getCart = async (req, res) => {
     try {
@@ -12,24 +13,23 @@ exports.getCart = async (req, res) => {
 exports.addToCart = async (req, res) => {
     const { productId, quantity, selectedColor, selectedSize } = req.body;
     try {
-        // Check if the product exists and has sufficient stock
+        // Step 1: Check if the product exists
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
 
-        // Check stock availability
+        // Step 2: Check if the requested quantity is available in stock
         if (product.stock < quantity) {
             return res.status(400).json({ message: 'Insufficient stock available' });
         }
-        
-        // Find the user's cart or create a new one if it doesn't exist
+
         let cart = await Cart.findOne({ userId: req.user.id });
         if (!cart) {
             cart = new Cart({ userId: req.user.id, items: [] });
         }
 
-        // Check if the item already exists in the cart
+        // Step 4: Check if the item already exists in the cart
         const existingItem = cart.items.find(item =>
             item.productId.toString() === productId &&
             item.selectedColor === selectedColor &&
@@ -37,15 +37,17 @@ exports.addToCart = async (req, res) => {
         );
 
         if (existingItem) {
-            // Update the quantity if the item already exists
-            existingItem.quantity += quantity;
+            // Step 5: Update the quantity if the item already exists
+            const newQuantity = existingItem.quantity + quantity;
 
             // Ensure the updated quantity does not exceed stock
-            if (existingItem.quantity > product.stock) {
-                return res.status(400).json({ message: 'Insufficient stock available' });
+            if (newQuantity > product.stock) {
+                return res.status(400).json({ message: 'Insufficient stock available for the requested quantity' });
             }
+
+            existingItem.quantity = newQuantity;
         } else {
-            // Add a new item to the cart
+            // Step 6: Add a new item to the cart
             cart.items.push({ productId, quantity, selectedColor, selectedSize });
         }
 
