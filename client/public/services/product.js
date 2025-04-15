@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="d-flex gap-2" id="colorOptions">${colors}</div>
             </div>
 
-            <form class="d-flex gap-3 align-items-center mt-4">
-              <input type="number" class="form-control w-auto" value="1" min="1" style="max-width: 80px;">
+            <form id="addToCartForm" class="d-flex gap-3 align-items-center mt-4">
+              <input type="number" id="quantityInput" class="form-control w-auto" value="1" min="1" style="max-width: 80px;">
               <button class="btn btn-dark" type="submit">
                 <i class="bi bi-cart-plus me-1"></i> Add to Cart
               </button>
@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>`;
 
         setupInteraction();
+        setupAddToCart();
       };
 
       const setupInteraction = () => {
@@ -91,7 +92,54 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
       };
+      const setupAddToCart = () => {
+        const form = document.getElementById('addToCartForm');
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
 
+          const token = localStorage.getItem('token');
+          if (!token) {
+            alert('You must be logged in to add items to the cart.');
+            window.location.href = 'login.html';
+            return;
+          }
+
+          const quantity = parseInt(document.getElementById('quantityInput').value, 10);
+          const selectedColor = document.querySelector('.color-option.active')?.dataset.color;
+          const selectedSize = document.querySelector('.size-option.active')?.dataset.size;
+
+          if (!selectedColor || !selectedSize) {
+            alert('Please select a color and size.');
+            return;
+          }
+
+          try {
+            const res = await fetch('/api/cart', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+               productId: currentVariant._id,
+                quantity,
+                selectedColor,
+                selectedSize
+              })
+            });
+
+            if (res.ok) {
+              alert('Item added to cart!');
+            } else {
+              const data = await res.json();
+              alert(data.message || 'Failed to add item to cart.');
+            }
+          } catch (err) {
+              console.error('Failed to add item to cart:', err);
+              alert('Could not add item to cart.');
+          }
+        });
+      };
       render();
     })
     .catch(err => {
