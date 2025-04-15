@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #eae7df;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .text-teal { color: #54a3a4; }
+    .text-deep-teal { color: #016870; }
+    .btn-teal {
+      background-color: #54a3a4;
+      color: #fff;
+      font-weight: 500;
+      border: none;
+    }
+    .btn-teal:hover {
+      background-color: #016870;
+      color: #fff;
+    }
+    .table th, .table td { vertical-align: middle; }
+    .badge {
+      font-size: 0.9rem;
+      padding: 0.4em 0.75em;
+      border-radius: 0.5rem;
+    }
+    .sidebar {
+      min-width: 240px;
+      height: 100vh;
+    }
+    .action-btn {
+      border: none;
+      background: transparent;
+      color: #333;
+    }
+    .action-btn:hover {
+      color: #016870;
+    }
+    .pagination .page-item .page-link {
+      color: #54a3a4;
+      border: none;
+      background-color: transparent;
+    }
+    .pagination .page-item.active .page-link {
+      background-color: #54a3a4;
+      color: #fff;
+      border-radius: 6px;
+    }
+    .pagination .page-item.disabled .page-link {
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div class="bg-white p-3 shadow-sm sidebar">
+      <h5 class="fw-bold mb-4">Admin Panel</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a href="./dashboard.html" class="nav-link text-dark">Dashboard</a></li>
+        <li class="nav-item"><a href="./user_management.html" class="nav-link active text-teal fw-semibold">User Management</a></li>
+        <li class="nav-item"><a href="#" class="nav-link text-dark">Order Management</a></li>
+        <li class="nav-item"><a href="#" class="nav-link text-dark">Inventory</a></li>
+        <li class="nav-item mt-3"><a href="#" class="nav-link text-danger">Logout</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-deep-teal fw-bold">User Management</h3>
+        <div>
+          <button class="btn btn-dark me-2" onclick="window.location.href='../index.html';">Go to Website</button>
+          <button class="btn btn-teal"><i class="bi bi-person-plus me-1"></i> Add User</button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="row mb-3">
+        <div class="col-md-4 mb-2">
+          <input type="text" id="searchInput" class="form-control" placeholder="Search by name or email">
+        </div>
+        <div class="col-md-3 mb-2">
+          <select id="filterRole" class="form-select">
+            <option value="">Filter by Role</option>
+            <option value="Admin">Admin</option>
+            <option value="User">User</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-2">
+          <select id="filterStatus" class="form-select">
+            <option value="">Filter by Status</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive rounded shadow-sm">
+        <table class="table table-bordered align-middle bg-white" id="userTable">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination (Structured like the image) -->
+      <div class="d-flex justify-content-center mt-4">
+        <nav>
+          <ul class="pagination mb-0" id="paginationContainer"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inline JS -->
+  <script>
+   <!-- this function will be deleted by backend developer it's only for test   -->
+    const users = [];
+    const roles = ['Admin', 'User'];
+    const statuses = ['Active', 'Inactive'];
+
+    for (let i = 1; i <= 800; i++) {
+      users.push({
+        name: `User ${i}`,
+        email: `user${i}@example.com`,
+        role: roles[i % 3],
+        status: statuses[i % 2]
+      });
+    } 
+
+    const rowsPerPage = 12;
+    let currentPage = 1;
+
+    function renderPagination(filteredLength) {
+      const totalPages = Math.ceil(filteredLength / rowsPerPage);
+      const pagination = document.getElementById("paginationContainer");
+      pagination.innerHTML = "";
+
+      const addPage = (label, page, disabled = false, active = false) => {
+        const li = document.createElement("li");
+        li.className = `page-item ${disabled ? "disabled" : ""} ${active ? "active" : ""}`;
+        const link = document.createElement("a");
+        link.className = "page-link";
+        link.href = "#";
+        link.textContent = label;
+        link.onclick = e => {
+          e.preventDefault();
+          if (!disabled && page !== currentPage && page > 0) {
+            currentPage = page;
+            renderTable();
+          }
+        };
+        li.appendChild(link);
+        pagination.appendChild(li);
+      };
+
+      addPage("« Previous", currentPage - 1, currentPage === 1);
+
+      const range = 2;
+      let start = Math.max(1, currentPage - range);
+      let end = Math.min(totalPages, currentPage + range);
+
+      if (start > 1) {
+        addPage("1", 1);
+        if (start > 2) addPage("...", 0, true);
+      }
+
+      for (let i = start; i <= end; i++) {
+        addPage(i, i, false, i === currentPage);
+      }
+
+      if (end < totalPages) {
+        if (end < totalPages - 1) addPage("...", 0, true);
+        addPage(totalPages, totalPages);
+      }
+
+      addPage("Next »", currentPage + 1, currentPage === totalPages);
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('userTableBody');
+      const start = (currentPage - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const roleFilter = document.getElementById("filterRole").value;
+      const statusFilter = document.getElementById("filterStatus").value;
+
+      const filtered = users.filter(u =>
+        (u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search)) &&
+        (roleFilter === "" || u.role === roleFilter) &&
+        (statusFilter === "" || u.status === statusFilter)
+      );
+
+      const visibleUsers = filtered.slice(start, end);
+
+      tbody.innerHTML = visibleUsers.map(u => `
+        <tr>
+          <td>${u.name}</td>
+          <td>${u.email}</td>
+          <td>${u.role}</td>
+          <td><span class="badge ${u.status === 'Active' ? 'bg-success' : 'bg-secondary'} text-dark">${u.status}</span></td>
+          <td>
+            <button class="action-btn me-2" title="View"><i class="bi bi-eye"></i></button>
+            <button class="action-btn me-2" title="Edit"><i class="bi bi-pencil"></i></button>
+            <button class="action-btn" title="Delete"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      `).join("");
+
+      renderPagination(filtered.length);
+    }
+
+    document.getElementById("searchInput").addEventListener("input", () => { currentPage = 1; renderTable(); });
+    document.getElementById("filterRole").addEventListener("change", () => { currentPage = 1; renderTable(); });
+    document.getElementById("filterStatus").addEventListener("change", () => { currentPage = 1; renderTable(); });
+
+    renderTable();
+  </script>
+</body>
+</html>
