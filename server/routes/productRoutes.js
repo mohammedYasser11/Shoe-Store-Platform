@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const auth   = require('../middleware/auth');
-const { getAll, getById, create, update, remove } = require('../controllers/productController');
+const { getAll, getById, create, update, remove, getRelatedProducts } = require('../controllers/productController');
 
 // Public
+router.get('/related', getRelatedProducts);
 router.get('/',    getAll);
 router.get('/:id', getById);
 

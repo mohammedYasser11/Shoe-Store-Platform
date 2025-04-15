@@ -66,6 +66,32 @@ document.addEventListener('DOMContentLoaded', () => {
         setupInteraction();
         setupAddToCart();
       };
+      // Fetch related products
+      const fetchRelatedProducts = async () => {
+        try {
+          const res = await fetch(`/api/products/related?category=${encodeURIComponent(product.category)}&brand=${encodeURIComponent(product.brand)}&exclude=${productId}`);
+          const relatedProducts = await res.json();
+          // console.log('Related Products(frontend):', relatedProducts);
+          const suggestedContainer = document.getElementById('suggestedProducts');
+          // Render related products
+          suggestedContainer.innerHTML = relatedProducts.map(related => `
+            <div class="col-6 col-md-3">
+              <a href="product.html?id=${related._id}" class="text-decoration-none text-dark">
+                <div class="card h-100">
+                  <img src="${related.images[0] || '/assets/images/placeholder.png'}" class="card-img-top" alt="${related.name}">
+                  <div class="card-body text-center">
+                    <h6 class="card-title mb-1">${related.name}</h6>
+                    <p class="card-text text-danger fw-semibold">$${related.price.toFixed(2)}</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          `).join('');
+        } catch (err) {
+          console.error('Error fetching related products:', err);
+          suggestedContainer.innerHTML = '<p class="text-danger">Could not load related products.</p>';
+        }
+      };
 
       const setupInteraction = () => {
         document.querySelectorAll('.color-option').forEach(el => {
@@ -141,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       };
+      fetchRelatedProducts();
       render();
     })
     .catch(err => {
