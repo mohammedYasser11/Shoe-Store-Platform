@@ -1,6 +1,12 @@
 // server/models/Product.js
 const mongoose = require('mongoose');
 
+const variantSchema = new mongoose.Schema({
+  color: { type: String, required: true },
+  size: { type: String, required: true },
+  stock: { type: Number, required: true, default: 0 } // Stock for this specific variant
+});
+
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -16,13 +22,7 @@ const productSchema = new mongoose.Schema({
     min: 0
   },
   images: [String],        // URLs
-  colors: [String],        // e.g. ["red","black"]
-  sizes: [String],         // e.g. ["42","43"]
-  stock: {
-    type: Number,
-    default: 0,
-    min: 0
-  },
+  variants: [variantSchema],
   isFeatured: {
     type: Boolean,
     default: false
