@@ -1,52 +1,57 @@
 function setField(id, value) {
   const el = document.getElementById(id);
+  const label = el.previousElementSibling;
   if (!value) {
-    el.previousElementSibling.style.display = 'none'; // hide label
-    el.style.display = 'none';                         // hide value
+    if (label) label.style.display = 'none'; // hide label
+    el.style.display = 'none';               // hide value
   } else {
     el.innerText = value;
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Check if token exists; if not, redirect to login
+  // 1. Redirect if not logged in
   const token = localStorage.getItem('token');
   if (!token) {
     window.location.href = 'login.html';
     return;
   }
 
-  // Make a GET request to your protected endpoint
+  // 2. Fetch the current user's data
   fetch('/api/auth/me', {
-    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     }
   })
   .then(async res => {
-    // If unauthorized, redirect to login page
     if (res.status === 401) {
       window.location.href = 'login.html';
-      return;
+      return null;
     }
-    return await res.json();
+    return res.json();
   })
   .then(userData => {
-    if (userData) {
-      console.log('User data:', userData); // Debugging line
-      // Populate the profile page with user data
-      document.getElementById('profileName').innerText = userData.name || 'N/A';
-      document.getElementById('profileEmail').innerText = userData.email || 'N/A';
-      // For phone, check if a valid value exists; if not, hide its container.
-      setField('profilePhone', userData.phone);
+    if (!userData) return;
 
-      // For address, check if a valid value exists; if not, hide its container.
-      const address = userData.address || {};
-      setField('profileCountry', address.country);
-      setField('profileCity',    address.city);
-      setField('profileZip',     address.zip);
-      setField('profileStreet',  address.street);
+    console.log('User data:', userData);
+
+    // 3. Populate text fields
+    document.getElementById('profileName').innerText  = userData.name  || 'N/A';
+    document.getElementById('profileEmail').innerText = userData.email || 'N/A';
+    setField('profilePhone', userData.phone);
+
+    const address = userData.address || {};
+    setField('profileCountry', address.country);
+    setField('profileCity',    address.city);
+    setField('profileZip',     address.zip);
+    setField('profileStreet',  address.street);
+
+    // 4. Handle profile image
+    const imgEl = document.getElementById('profileImage');
+    // If they have a custom profilePicture, use it; otherwise leave the default.
+    if (userData.profilePicture) {
+      imgEl.src = userData.profilePicture;
     }
   })
   .catch(err => {
