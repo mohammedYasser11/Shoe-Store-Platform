@@ -32,36 +32,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // 1. Track displayed name + color combos to avoid duplicates
-const shown = new Set();
+    const shown = new Set();
 
-products.forEach(p => {
-  p.colors.forEach((color, i) => {
-    const key = `${p.name}`;
-    if (shown.has(key)) return; // skip duplicates
-    shown.add(key);
+    products.forEach(p => {
+      p.colors.forEach((color, i) => {
+        const key = `${p.name}`;
+        if (shown.has(key)) return; // skip duplicates
+        shown.add(key);
 
-    const col = document.createElement('div');
-    col.className = 'col';
-    col.innerHTML = `
-      <div class="card h-100">
-        <img
-          src="${(p.images && p.images[i]) ? p.images[i] : '/assets/images/placeholder.png'}"
-          class="card-img-top"
-          alt="${p.name}"
-        >
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">${p.name}</h5>
-          <p class="card-text text-muted mb-4">$${p.price.toFixed(2)}</p>
-          <a href="product.html?id=${p._id}&color=${encodeURIComponent(color)}"
-            class="mt-auto btn btn-sm btn-outline-primary">
-            View
-          </a>
-        </div>
-      </div>
-    `;
-    container.appendChild(col);
-  });
-});
+        const col = document.createElement('div');
+        col.className = 'col';
+        col.innerHTML = `
+          <div class="card h-100">
+            <img
+              src="${(p.images && p.images[i]) ? p.images[i] : '/assets/images/placeholder.png'}"
+              class="card-img-top"
+              alt="${p.name}"
+            >
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">${p.name}</h5>
+              <p class="card-text text-muted mb-4">$${p.price.toFixed(2)}</p>
+              <a href="product.html?id=${p._id}&color=${encodeURIComponent(color)}"
+                class="mt-auto btn btn-sm btn-outline-primary">
+                View
+              </a>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+    });
 
 
     } catch (err) {

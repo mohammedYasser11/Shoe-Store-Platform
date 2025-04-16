@@ -32,6 +32,18 @@ exports.getAll = async (req, res) => {
   }
 };
 
+// GET /api/products/limited
+exports.getLimitedProducts = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 8; // Default to 8 products if no limit is provided
+    const products = await Product.find().limit(limit); // Fetch limited products
+    res.json(products);
+  } catch (err) {
+    console.error('Error fetching limited products:', err);
+    res.status(500).json({ message: 'Error fetching limited products' });
+  }
+};
+
 // GET /api/products/:id
 exports.getById = async (req, res) => {
   const prod = await Product.findById(req.params.id);
@@ -55,4 +67,23 @@ exports.update = async (req, res) => {
 exports.remove = async (req, res) => {
   await Product.findByIdAndDelete(req.params.id);
   res.json({ message: 'Deleted' });
+};
+
+// GET /api/products/related
+exports.getRelatedProducts = async (req, res) => {
+  const { category, brand, exclude } = req.query;
+  console.log('Query Parameters:', { category, brand, exclude });
+  try {
+    const filter = {
+      category,
+      _id: { $ne: exclude } // Exclude the current product
+    };
+    // console.log('Filter:', filter);
+    const relatedProducts = await Product.find(filter).limit(4); // Limit to 4 products
+    // console.log('Related Products:', relatedProducts);
+    res.json(relatedProducts);
+  } catch (err) {
+    console.error('Error fetching related products:', err);
+    res.status(500).json({ message: 'Error fetching related products', error: err.message });
+  }
 };

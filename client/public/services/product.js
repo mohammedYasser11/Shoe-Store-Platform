@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="d-flex gap-2" id="colorOptions">${colors}</div>
             </div>
 
-            <form class="d-flex gap-3 align-items-center mt-4">
-              <input type="number" class="form-control w-auto" value="1" min="1" style="max-width: 80px;">
+            <form id="addToCartForm" class="d-flex gap-3 align-items-center mt-4">
+              <input type="number" id="quantityInput" class="form-control w-auto" value="1" min="1" style="max-width: 80px;">
               <button class="btn btn-dark" type="submit">
                 <i class="bi bi-cart-plus me-1"></i> Add to Cart
               </button>
@@ -64,6 +64,33 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>`;
 
         setupInteraction();
+        setupAddToCart();
+      };
+      // Fetch related products
+      const fetchRelatedProducts = async () => {
+        try {
+          const res = await fetch(`/api/products/related?category=${encodeURIComponent(product.category)}&brand=${encodeURIComponent(product.brand)}&exclude=${productId}`);
+          const relatedProducts = await res.json();
+          // console.log('Related Products(frontend):', relatedProducts);
+          const suggestedContainer = document.getElementById('suggestedProducts');
+          // Render related products
+          suggestedContainer.innerHTML = relatedProducts.map(related => `
+            <div class="col-6 col-md-3">
+              <a href="product.html?id=${related._id}" class="text-decoration-none text-dark">
+                <div class="card h-100">
+                  <img src="${related.images[0] || '/assets/images/placeholder.png'}" class="card-img-top" alt="${related.name}">
+                  <div class="card-body text-center">
+                    <h6 class="card-title mb-1">${related.name}</h6>
+                    <p class="card-text text-danger fw-semibold">$${related.price.toFixed(2)}</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          `).join('');
+        } catch (err) {
+          console.error('Error fetching related products:', err);
+          suggestedContainer.innerHTML = '<p class="text-danger">Could not load related products.</p>';
+        }
       };
 
       const setupInteraction = () => {
@@ -92,6 +119,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       };
 
+      const setupAddToCart = () => {
+        const form = document.getElementById('addToCartForm');
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const token = localStorage.getItem('token');
+          if (!token) {
+            alert('You must be logged in to add items to the cart.');
+            window.location.href = 'login.html';
+            return;
+          }
+
+          const quantity = parseInt(document.getElementById('quantityInput').value, 10);
+          const selectedColor = document.querySelector('.color-option.active')?.dataset.color;
+          const selectedSize = document.querySelector('.size-option.active')?.dataset.size;
+
+          if (!selectedColor || !selectedSize) {
+            alert('Please select a color and size.');
+            return;
+          }
+
+          try {
+            const res = await fetch('/api/cart', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+               productId: currentVariant._id,
+                quantity,
+                selectedColor,
+                selectedSize
+              })
+            });
+
+            if (res.ok) {
+              alert('Item added to cart!');
+            } else {
+              const data = await res.json();
+              alert(data.message || 'Failed to add item to cart.');
+            }
+          } catch (err) {
+              console.error('Failed to add item to cart:', err);
+              alert('Could not add item to cart.');
+          }
+        });
+      };
+      fetchRelatedProducts();
       render();
     })
     .catch(err => {
