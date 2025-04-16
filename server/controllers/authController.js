@@ -2,9 +2,13 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-};
+function generateToken(user) {
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+}
 
 exports.registerUser = async (req, res) => {
   const { name, email, password, phone, address } = req.body;
@@ -16,8 +20,8 @@ exports.registerUser = async (req, res) => {
     const user = await User.create({ name, email, password, phone,address });
 
     res.status(201).json({
-      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, address: user.address },
-      token: generateToken(user._id)
+      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, address: user.address, role: user.role },
+      token: generateToken(user)
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -35,8 +39,8 @@ exports.loginUser = async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     res.json({
-      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, address: user.address },
-      token: generateToken(user._id)
+      user: { id: user._id, name: user.name, email: user.email, phone: user.phone, address: user.address, role: user.role },
+      token: generateToken(user)
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
