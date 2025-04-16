@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const auth   = require('../middleware/auth');
+const { protect }   = require('../middleware/auth');
 const { getAll, getById, create, update, remove, getRelatedProducts, getLimitedProducts } = require('../controllers/productController');
 
 // Public
@@ -9,8 +9,8 @@ router.get('/',    getAll);
 router.get('/:id', getById);
 
 // Protected (admin)
-router.post('/',   auth, create);
-router.put('/:id', auth, update);
-router.delete('/:id', auth, remove);
+router.post('/',   protect, create);
+router.put('/:id', protect, update);
+router.delete('/:id', protect, remove);
 
 module.exports = router;
