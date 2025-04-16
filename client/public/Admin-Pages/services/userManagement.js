@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let users             = [];
 
     const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
-    if (!token) return window.location.href = 'login.html';
+    if (!token) return window.location.href = '../../login.html';
 
     async function fetchUsers() {
         try {
