@@ -32,6 +32,18 @@ exports.getAll = async (req, res) => {
   }
 };
 
+// GET /api/products/limited
+exports.getLimitedProducts = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 8; // Default to 8 products if no limit is provided
+    const products = await Product.find().limit(limit); // Fetch limited products
+    res.json(products);
+  } catch (err) {
+    console.error('Error fetching limited products:', err);
+    res.status(500).json({ message: 'Error fetching limited products' });
+  }
+};
+
 // GET /api/products/:id
 exports.getById = async (req, res) => {
   const prod = await Product.findById(req.params.id);
