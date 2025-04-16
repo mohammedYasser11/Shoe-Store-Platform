@@ -64,8 +64,8 @@
       <ul class="nav flex-column">
         <li class="nav-item"><a href="./dashboard.html" class="nav-link text-dark">Dashboard</a></li>
         <li class="nav-item"><a href="./user_management.html" class="nav-link active text-teal fw-semibold">User Management</a></li>
-        <li class="nav-item"><a href="#" class="nav-link text-dark">Order Management</a></li>
-        <li class="nav-item"><a href="#" class="nav-link text-dark">Inventory</a></li>
+        <li class="nav-item"><a href="./order_management.html" class="nav-link text-dark">Order Management</a></li>
+        <li class="nav-item"><a href="./inventory_management.html" class="nav-link text-dark">Inventory</a></li>
         <li class="nav-item mt-3"><a href="#" class="nav-link text-danger">Logout</a></li>
       </ul>
     </div>
@@ -126,109 +126,7 @@
     </div>
   </div>
 
-  <!-- Inline JS -->
-  <script>
-   <!-- this function will be deleted by backend developer it's only for test   -->
-    const users = [];
-    const roles = ['Admin', 'User'];
-    const statuses = ['Active', 'Inactive'];
+  <script src="./services/userManagement.js"></script>
 
-    for (let i = 1; i <= 800; i++) {
-      users.push({
-        name: `User ${i}`,
-        email: `user${i}@example.com`,
-        role: roles[i % 3],
-        status: statuses[i % 2]
-      });
-    } 
-
-    const rowsPerPage = 12;
-    let currentPage = 1;
-
-    function renderPagination(filteredLength) {
-      const totalPages = Math.ceil(filteredLength / rowsPerPage);
-      const pagination = document.getElementById("paginationContainer");
-      pagination.innerHTML = "";
-
-      const addPage = (label, page, disabled = false, active = false) => {
-        const li = document.createElement("li");
-        li.className = `page-item ${disabled ? "disabled" : ""} ${active ? "active" : ""}`;
-        const link = document.createElement("a");
-        link.className = "page-link";
-        link.href = "#";
-        link.textContent = label;
-        link.onclick = e => {
-          e.preventDefault();
-          if (!disabled && page !== currentPage && page > 0) {
-            currentPage = page;
-            renderTable();
-          }
-        };
-        li.appendChild(link);
-        pagination.appendChild(li);
-      };
-
-      addPage("« Previous", currentPage - 1, currentPage === 1);
-
-      const range = 2;
-      let start = Math.max(1, currentPage - range);
-      let end = Math.min(totalPages, currentPage + range);
-
-      if (start > 1) {
-        addPage("1", 1);
-        if (start > 2) addPage("...", 0, true);
-      }
-
-      for (let i = start; i <= end; i++) {
-        addPage(i, i, false, i === currentPage);
-      }
-
-      if (end < totalPages) {
-        if (end < totalPages - 1) addPage("...", 0, true);
-        addPage(totalPages, totalPages);
-      }
-
-      addPage("Next »", currentPage + 1, currentPage === totalPages);
-    }
-
-    function renderTable() {
-      const tbody = document.getElementById('userTableBody');
-      const start = (currentPage - 1) * rowsPerPage;
-      const end = start + rowsPerPage;
-      const search = document.getElementById("searchInput").value.toLowerCase();
-      const roleFilter = document.getElementById("filterRole").value;
-      const statusFilter = document.getElementById("filterStatus").value;
-
-      const filtered = users.filter(u =>
-        (u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search)) &&
-        (roleFilter === "" || u.role === roleFilter) &&
-        (statusFilter === "" || u.status === statusFilter)
-      );
-
-      const visibleUsers = filtered.slice(start, end);
-
-      tbody.innerHTML = visibleUsers.map(u => `
-        <tr>
-          <td>${u.name}</td>
-          <td>${u.email}</td>
-          <td>${u.role}</td>
-          <td><span class="badge ${u.status === 'Active' ? 'bg-success' : 'bg-secondary'} text-dark">${u.status}</span></td>
-          <td>
-            <button class="action-btn me-2" title="View"><i class="bi bi-eye"></i></button>
-            <button class="action-btn me-2" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="action-btn" title="Delete"><i class="bi bi-trash"></i></button>
-          </td>
-        </tr>
-      `).join("");
-
-      renderPagination(filtered.length);
-    }
-
-    document.getElementById("searchInput").addEventListener("input", () => { currentPage = 1; renderTable(); });
-    document.getElementById("filterRole").addEventListener("change", () => { currentPage = 1; renderTable(); });
-    document.getElementById("filterStatus").addEventListener("change", () => { currentPage = 1; renderTable(); });
-
-    renderTable();
-  </script>
 </body>
 </html>
