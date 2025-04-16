@@ -64,7 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (res.ok) {
           localStorage.setItem('token', data.token);
-          window.location.href = 'profile.html'; // redirect after login
+          const payload = JSON.parse(atob(data.token.split('.')[1]));
+          if(payload.role === 'admin') {
+            window.location.href = '../Admin-Pages/dashboard.html'; // redirect to admin dashboard
+          } else if(payload.role === 'user') {
+            window.location.href = 'profile.html'; // redirect to user dashboard
+          }
         } else {
           alert(data.message || 'Login failed');
         }
