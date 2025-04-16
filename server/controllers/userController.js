@@ -3,6 +3,7 @@ const User = require('../models/User');
 exports.updateProfile = async (req, res) => {
   try {
     const updates = {};
+    console.log('BODY:', req.body);
     if (req.body.name)    updates.name    = req.body.name;
     if (req.body.phone)   updates.phone   = req.body.phone;
     if (req.body.address) {
