@@ -9,7 +9,6 @@ function showMessage(msg, type = 'success') {
 
 document.addEventListener('DOMContentLoaded', () => {
   const form    = document.getElementById('editProfileForm');
-  const msgDiv  = document.getElementById('editMsg');
   const preview = document.getElementById('profilePreview');
   const input   = document.getElementById('profileImage');
   const token   = localStorage.getItem('token');
@@ -37,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('zip').value     = addr.zip     || '';
     document.getElementById('street').value  = addr.street  || '';
     // Set preview image
-    preview.src = user.profilePicture || './assets/images/emptyProfilePicture.png';
+    preview.src = user.profilePic || './assets/images/emptyProfilePicture.png';
   })
   .catch(err => {
     console.error('Prefill error:', err);
@@ -80,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch('/api/auth/me', {
+      const res = await fetch('/api/users/me', {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`
