@@ -1,11 +1,11 @@
 const express = require('express');
 const { registerUser, loginUser, getMe } = require('../controllers/authController');
-const authMiddleware = require('../middleware/auth');
+const { protect } = require('../middleware/auth'); // Import the protect middleware
 
 const router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-router.get('/me', authMiddleware, getMe);
+router.get('/me', protect, getMe); // protect = middleware that verifies token
 
 module.exports = router;
