@@ -12,12 +12,12 @@ exports.getAll = async (req, res) => {
       filter.name = { $regex: search, $options: 'i' };
     }
 
-    // 2. Optional: filter by category
+    // 2. Optional: filter by category (using case-insensitive exact match)
     if (category) {
-      filter.category = category;
+      filter.category = { $regex: `^${category}$`, $options: 'i' };
     }
 
-    // 3. Optional: price range
+    // 3. Optional: price range filtering
     if (minPrice || maxPrice) {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
@@ -78,9 +78,8 @@ exports.getRelatedProducts = async (req, res) => {
       category,
       _id: { $ne: exclude } // Exclude the current product
     };
-    // console.log('Filter:', filter);
-    const relatedProducts = await Product.find(filter).limit(4); // Limit to 4 products
-    // console.log('Related Products:', relatedProducts);
+    // Limit to 4 products for related products
+    const relatedProducts = await Product.find(filter).limit(4);
     res.json(relatedProducts);
   } catch (err) {
     console.error('Error fetching related products:', err);
