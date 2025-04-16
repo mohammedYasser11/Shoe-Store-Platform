@@ -8,7 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const cartRoutes = require('./routes/cartRoutes');
-const usersRouter = require('./routes/usersRoutes');
+const adminRouter = require('./routes/adminRoutes');
 const path = require('path');
 
 // Serve static files from the client/public folder
@@ -25,7 +25,7 @@ app.use('/api/users',userRoutes );
 app.use('/api/products', productRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/cart', cartRoutes);
-//app.use('/api/admin/users', usersRouter);
+app.use('/api', adminRouter);
 
 
 
