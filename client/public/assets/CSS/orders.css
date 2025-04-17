@@ -1,0 +1,53 @@
+body {
+    background-color: #eae7df;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .text-deep-teal {
+    color: #016870;
+  }
+  
+  .table {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .table-header {
+    background-color: #f7f7f7;
+    color: #016870;
+  }
+  
+  .badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.75em;
+    border-radius: 0.5rem;
+  }
+  
+  .status-pending {
+    background-color: #fbd03d;
+    color: #000; /* Black text */
+  }
+  
+  .status-shipped {
+    background-color: #54a3a4;
+    color: #000;
+  }
+  
+  .status-delivered {
+    background-color: #198754;
+    color: #000;
+  }
+  
+  .status-canceled {
+    background-color: #dc3545;
+    color: #000;
+  }
+    
+  .table td,
+  .table th {
+    vertical-align: middle;
+    text-align: center;
+  }
+  
