@@ -50,4 +50,48 @@ body {
     vertical-align: middle;
     text-align: center;
   }
+  .navbar-custom {
+    background-color: #F2EFE7;
+}
+
+.navbar-custom .nav-link {
+    margin: 0 20px;
+    font-weight: 500;
+    color: #000;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+.navbar-custom .nav-link:hover {
+    background-color: #48A6A7;
+    color: #fff;
+}
+
+.navbar-custom .nav-link:active {
+    background-color: #006A71;
+    color: #fff;
+}
+
+.navbar-custom .btn-outline-dark:hover,
+.navbar-custom .btn-outline-success:hover {
+    background-color: #48A6A7;
+    border-color: #48A6A7;
+    color: #fff;
+}
+
+.navbar-custom .btn-outline-dark:active,
+.navbar-custom .btn-outline-success:active {
+    background-color: #006A71 !important;
+    border-color: #006A71 !important;
+    color: #fff !important;
+}
+
+.navbar-custom .form-control {
+    max-width: 180px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
   

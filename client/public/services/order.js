@@ -1,21 +1,9 @@
-// services/order.js
+// client/public/services/order.js
 
-// 1) Immediately guard the page before anything else runs
-const token = localStorage.getItem('token');
-if (!token) {
-    // Use replace() so the login page replaces this in history
-    window.location.replace('login.html');
-} else {
-    // 2) If authenticated, wire up the rest of your orders logic
-    document.addEventListener('DOMContentLoaded', () => {
-        // Example: fetch & render orders
-        fetchOrders();
-    });
-}
-// 2) Once authenticated, fetch & render:
+// (1) Inline guard is in the HTML <head>. Here we proceed assuming a token is present.
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
-    const tbody = document.querySelector('table tbody');
+    const tbody = document.getElementById('ordersTableBody');
 
     async function fetchOrders() {
         try {
@@ -23,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const orders = await res.json();
     
+            const orders = await res.json();
             tbody.innerHTML = orders.map(o => `
             <tr>
                 <td>#${o._id.slice(-8).toUpperCase()}</td>
@@ -53,5 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </tr>`;
         }
     }
+    
     fetchOrders();
 });
