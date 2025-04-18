@@ -3,9 +3,8 @@ const mongoose = require('mongoose');
 
 const cartItemSchema = new mongoose.Schema({
   productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-  quantity: { type: Number, default: 1 },
-  selectedColor: String,
-  selectedSize: String
+  variantId: { type: mongoose.Schema.Types.ObjectId, required: true }, // Reference to the specific variant
+  quantity: { type: Number, default: 1 }
 });
 
 const cartSchema = new mongoose.Schema({
