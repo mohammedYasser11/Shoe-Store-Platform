@@ -1,3 +1,5 @@
+let renderCart;
+
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('productDetails');
   const params = new URLSearchParams(window.location.search);
@@ -13,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch(`/api/products/${productId}`)
     .then(res => res.json())
     .then(async product => {
+      
       // Get all variants for the product
       const variants = product.variants || [];
 
@@ -161,27 +164,115 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       };
 
+      renderCart = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          document.getElementById('cartSidebar').innerHTML = '<p class="text-danger">Please log in to view your cart.</p>';
+          return;
+        }
+      
+        try {
+          const res = await fetch('/api/cart', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+      
+          if (!res.ok) {
+            throw new Error('Failed to fetch cart');
+          }
+      
+          const cart = await res.json();
+          const cartContainer = document.querySelector('.offcanvas-body');
+      
+          if (cart.items.length === 0) {
+            cartContainer.innerHTML = '<p class="text-muted">Your cart is empty.</p>';
+            return;
+          }
+      
+          // Render cart items
+          const cartItemsHTML = cart.items.map(item => {
+            const variant = item.productId.variants.find(v => v._id === item.variantId); // Find the variant using variantId
+            if (!variant) {
+              console.error('Variant not found for item:', item);
+              return '';
+            }
+      
+            return `
+              <div class="d-flex align-items-start mb-4 border-bottom pb-3">
+                <img src="${item.productId.images[0] || '/assets/images/placeholder.jpg'}" 
+                     alt="${item.productId.name}" 
+                     class="img-thumbnail me-3" 
+                     style="width: 80px; height: 80px; object-fit: cover;">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">${item.productId.name}</h6>
+                  <p class="text-muted small mb-2">$${item.productId.price.toFixed(2)}</p>
+                  <p class="text-muted small mb-2">Color: ${variant.color}, Size: ${variant.size}</p>
+                  <div class="d-flex align-items-center gap-2">
+                    <input type="number" class="form-control form-control-sm" value="${item.quantity}" min="1" style="width: 60px;">
+                    <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart('${item._id}')">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+      
+          // Calculate total price
+          const totalPrice = cart.items.reduce((total, item) => {
+            const variant = item.productId.variants.find(v => v._id === item.variantId);
+            return variant ? total + item.productId.price * item.quantity : total;
+          }, 0);
+      
+          // Render cart total and checkout button
+          cartContainer.innerHTML = `
+            ${cartItemsHTML}
+            <div class="d-flex justify-content-between fw-semibold mt-4 mb-3">
+              <span>Total:</span>
+              <span>$${totalPrice.toFixed(2)}</span>
+            </div>
+            <button class="btn btn-dark w-100">Checkout</button>
+          `;
+        } catch (err) {
+          console.error('Error fetching cart:', err);
+          document.querySelector('.offcanvas-body').innerHTML = '<p class="text-danger">Failed to load cart.</p>';
+        }
+      };
+
       const setupAddToCart = () => {
         const form = document.getElementById('addToCartForm');
         form.addEventListener('submit', async (e) => {
           e.preventDefault();
-
+      
           const token = localStorage.getItem('token');
           if (!token) {
             alert('You must be logged in to add items to the cart.');
             window.location.href = 'login.html';
             return;
           }
-
+      
           const quantity = parseInt(document.getElementById('quantityInput').value, 10);
           const selectedColor = document.querySelector('.color-option.active')?.dataset.color;
           const selectedSize = document.querySelector('.size-option.active')?.dataset.size;
-
+      
           if (!selectedColor || !selectedSize) {
             alert('Please select a color and size.');
             return;
           }
-
+      
+          // Find the matching variant
+          const variant = product.variants.find(v =>
+            v.color.toLowerCase() === selectedColor.toLowerCase() &&
+            v.size === selectedSize
+          );
+      
+          if (!variant) {
+            alert('Selected variant not found.');
+            return;
+          }
+      
           try {
             const res = await fetch('/api/cart', {
               method: 'POST',
@@ -191,14 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
               },
               body: JSON.stringify({
                 productId: product._id,
-                quantity,
-                selectedColor,
-                selectedSize
+                variantId: variant._id,
+                quantity
               })
             });
-
+      
             if (res.ok) {
               alert('Item added to cart!');
+              renderCart();
             } else {
               const data = await res.json();
               alert(data.message || 'Failed to add item to cart.');
@@ -259,7 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
           suggestedContainer.innerHTML = '<p class="text-danger">Could not load related products.</p>';
         }
       }
-
+  
+      renderCart();
       fetchRelatedProducts();
       render();
     })
@@ -268,6 +360,32 @@ document.addEventListener('DOMContentLoaded', () => {
       container.innerHTML = '<p class="text-danger">Could not load product details.</p>';
     });
 });
+
+function removeFromCart(itemId) {
+  console.log('Removing item with ID:')
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('You must be logged in to remove items from the cart.');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  fetch(`/api/cart/${itemId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+    .then(res => res.json())
+    .then(() => {
+      alert('Item removed from cart!');
+      renderCart();
+    })
+    .catch(err => {
+      console.error('Error removing item from cart:', err);
+      alert('Failed to remove item from cart.');
+    });
+}
 
 /**
  * Helper: Map color names to hex codes for styling consistency.
