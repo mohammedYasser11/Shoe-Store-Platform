@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   getAllUsers,
   getUserById,
+  createUser,
   updateUser,
   deleteUser
 } = require('../controllers/usersController');
@@ -18,6 +19,8 @@ router.use(protect, adminOnly);
 // List users
 router.get('/admin/users', getAllUsers);
 router.get('/admin/users/:id', getUserById);
+// (Optional) Create user
+router.post('/admin/users', createUser);
 
 // (Optional) Edit user
 router.put('/admin/users/:id', updateUser);

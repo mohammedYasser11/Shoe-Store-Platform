@@ -15,6 +15,17 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+exports.createUser = async (req, res) => {
+  try {
+    const { name, email, password, role, status } = req.body;
+    const newUser = new User({ name, email, password, role, status });
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully.' });
+  } catch (err) {
+    console.error('Error creating user:', err);
+    res.status(500).json({ message: 'Server error creating user.' });
+  }
+}
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
