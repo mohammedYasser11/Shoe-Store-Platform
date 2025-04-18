@@ -1,30 +1,28 @@
 const express = require('express');
-const router  = express.Router();
 const { protect, adminOnly } = require('../middleware/auth');
 const {
-  getAllUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser
+  getAllUsers, getUserById, createUser, updateUser, deleteUser
 } = require('../controllers/usersController');
-const {
-  getAllOrders,
-  updateOrderStatus
-} = require('../controllers/orderController');
+const { getAllOrders, updateOrderStatus } = require('../controllers/orderController');
+const { getDashboardStats } = require('../controllers/adminController');
 
-// Protect all admin endpoints
+const router = express.Router();
+
+// All /api/admin/* require an admin token
 router.use(protect, adminOnly);
 
-// User management (you already have these)
-router.get ('/admin/users',      getAllUsers);
-router.get ('/admin/users/:id',  getUserById);
-router.post('/admin/users',      createUser);
-router.put ('/admin/users/:id',  updateUser);
+// Dashboard stats
+router.get('/admin/dashboard', getDashboardStats);
+
+// User management
+router.get ('/admin/users',       getAllUsers);
+router.get ('/admin/users/:id',   getUserById);
+router.post('/admin/users',       createUser);
+router.put ('/admin/users/:id',   updateUser);
 router.delete('/admin/users/:id', deleteUser);
 
-// 👇 Order management
-router.get('/admin/orders',       getAllOrders);
-router.put('/admin/orders/:id',   updateOrderStatus);
+// Order management
+router.get ('/admin/orders',         getAllOrders);
+router.put ('/admin/orders/:id',     updateOrderStatus);
 
 module.exports = router;
