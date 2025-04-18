@@ -3,6 +3,7 @@ const { protect, adminOnly } = require('../middleware/auth');
 const router = express.Router();
 const {
   getAllUsers,
+  getUserById,
   updateUser,
   deleteUser
 } = require('../controllers/usersController');
@@ -16,6 +17,7 @@ router.use(protect, adminOnly);
 
 // List users
 router.get('/admin/users', getAllUsers);
+router.get('/admin/users/:id', getUserById);
 
 // (Optional) Edit user
 router.put('/admin/users/:id', updateUser);

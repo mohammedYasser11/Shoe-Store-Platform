@@ -15,6 +15,19 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+      .select('-password -__v')
+      .lean();
+    if (!user) return res.status(404).json({ message: 'User not found.' });
+    res.json(user);
+  } catch (err) {
+    console.error('Error fetching user by ID:', err);
+    res.status(500).json({ message: 'Server error fetching user.' });
+  }
+};
+
 // (Optional) PUT /api/admin/users/:id
 exports.updateUser = async (req, res) => {
   try {
