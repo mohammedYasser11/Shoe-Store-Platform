@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
           <tr>
             <td>#${o._id}</td>
-            <td>${o.user?.name||'—'}</td>
+            <td>${o.userId.name||'—'}</td>
             <td>${dateStr}</td>
             <td>$${o.totalPrice.toFixed(2)}</td>
             <td>
