@@ -1,6 +1,6 @@
 const express = require('express');
+const router  = express.Router();
 const { protect, adminOnly } = require('../middleware/auth');
-const router = express.Router();
 const {
   getAllUsers,
   getUserById,
@@ -8,24 +8,23 @@ const {
   updateUser,
   deleteUser
 } = require('../controllers/usersController');
+const {
+  getAllOrders,
+  updateOrderStatus
+} = require('../controllers/orderController');
 
-router.get('/admin/dashboard', protect, adminOnly, (req, res) => {
-  res.json({ message: `Welcome Admin ${req.user.name}` });
-});
-
-// Protect all routes in this router: must be logged in and an admin
+// Protect all admin endpoints
 router.use(protect, adminOnly);
 
-// List users
-router.get('/admin/users', getAllUsers);
-router.get('/admin/users/:id', getUserById);
-// (Optional) Create user
-router.post('/admin/users', createUser);
-
-// (Optional) Edit user
-router.put('/admin/users/:id', updateUser);
-
-// (Optional) Delete user
+// User management (you already have these)
+router.get ('/admin/users',      getAllUsers);
+router.get ('/admin/users/:id',  getUserById);
+router.post('/admin/users',      createUser);
+router.put ('/admin/users/:id',  updateUser);
 router.delete('/admin/users/:id', deleteUser);
+
+// 👇 Order management
+router.get('/admin/orders',       getAllOrders);
+router.put('/admin/orders/:id',   updateOrderStatus);
 
 module.exports = router;
