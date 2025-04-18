@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       const payload = {
         name:   nameInput.value.trim(),
-        role:   roleInput.value,
+        role:   roleInput.value.toLowerCase(),
         status: statusInput.value
       };
   
