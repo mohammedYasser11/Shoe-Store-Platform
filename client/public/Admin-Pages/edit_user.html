@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit User</title>
+
+  <!-- AUTH GUARD -->
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) window.location.replace('login.html');
+  </script>
+
+  <!-- CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body { background-color: #eae7df; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .text-teal { color: #54a3a4; }
+    .text-deep-teal { color: #016870; }
+    .btn-teal { background-color: #54a3a4; color: #fff; border: none; }
+    .btn-teal:hover { background-color: #016870; }
+    .sidebar { min-width: 240px; height: 100vh; }
+    .form-container { max-width: 480px; margin: auto; }
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <div class="bg-white p-3 shadow-sm sidebar">
+      <h5 class="fw-bold mb-4">Admin Panel</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a href="./dashboard.html" class="nav-link">Dashboard</a></li>
+        <li class="nav-item"><a href="./user_management.html" class="nav-link">User Management</a></li>
+        <li class="nav-item"><a href="./order_management.html" class="nav-link">Order Management</a></li>
+        <li class="nav-item"><a href="./inventory_management.html" class="nav-link">Inventory</a></li>
+        <li class="nav-item mt-3"><a href="#" class="nav-link text-danger">Logout</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4">
+      <button id="backBtn" class="btn btn-outline-secondary mb-4">
+        <i class="bi bi-arrow-left"></i> Back
+      </button>
+      <h3 class="text-deep-teal fw-bold mb-4">Edit User</h3>
+
+      <div class="card shadow-sm form-container">
+        <div class="card-body">
+          <form id="editForm">
+            <div class="mb-3">
+              <label for="nameInput" class="form-label">Full Name</label>
+              <input type="text" id="nameInput" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="emailInput" class="form-label">Email</label>
+              <input type="email" id="emailInput" class="form-control" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="roleInput" class="form-label">Role</label>
+              <select id="roleInput" class="form-select">
+                <option>Admin</option>
+                <option>User</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="statusInput" class="form-label">Status</label>
+              <select id="statusInput" class="form-select">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-teal">Save Changes</button>
+            <div id="formMsg" class="mt-3"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="services/nav.js"></script>
+  <script src="services/editUser.js"></script>
+</body>
+</html>
