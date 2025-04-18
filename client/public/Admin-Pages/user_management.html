@@ -4,56 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>User Management</title>
+
+  <!-- AUTH GUARD: redirect to login if not logged in -->
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.replace('login.html');
+    }
+  </script>
+
+  <!-- CSS & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
-    body {
-      background-color: #eae7df;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    body { background-color: #eae7df; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .text-teal { color: #54a3a4; }
     .text-deep-teal { color: #016870; }
-    .btn-teal {
-      background-color: #54a3a4;
-      color: #fff;
-      font-weight: 500;
-      border: none;
-    }
-    .btn-teal:hover {
-      background-color: #016870;
-      color: #fff;
-    }
+    .btn-teal { background-color: #54a3a4; color: #fff; font-weight: 500; border: none; }
+    .btn-teal:hover { background-color: #016870; }
     .table th, .table td { vertical-align: middle; }
-    .badge {
-      font-size: 0.9rem;
-      padding: 0.4em 0.75em;
-      border-radius: 0.5rem;
-    }
-    .sidebar {
-      min-width: 240px;
-      height: 100vh;
-    }
-    .action-btn {
-      border: none;
-      background: transparent;
-      color: #333;
-    }
-    .action-btn:hover {
-      color: #016870;
-    }
-    .pagination .page-item .page-link {
-      color: #54a3a4;
-      border: none;
-      background-color: transparent;
-    }
-    .pagination .page-item.active .page-link {
-      background-color: #54a3a4;
-      color: #fff;
-      border-radius: 6px;
-    }
-    .pagination .page-item.disabled .page-link {
-      color: #ccc;
-    }
+    .badge { font-size: .9rem; padding: .4em .75em; border-radius: .5rem; }
+    .sidebar { min-width: 240px; height: 100vh; }
+    .action-btn { border: none; background: transparent; color: #333; }
+    .action-btn:hover { color: #016870; }
+    .pagination .page-link { color: #54a3a4; background: transparent; border: none; }
+    .pagination .active .page-link { background-color: #54a3a4; color: #fff; border-radius: 6px; }
+    .pagination .disabled .page-link { color: #ccc; }
   </style>
 </head>
 <body>
@@ -62,10 +38,10 @@
     <div class="bg-white p-3 shadow-sm sidebar">
       <h5 class="fw-bold mb-4">Admin Panel</h5>
       <ul class="nav flex-column">
-        <li class="nav-item"><a href="./dashboard.html" class="nav-link text-dark">Dashboard</a></li>
+        <li class="nav-item"><a href="./dashboard.html" class="nav-link">Dashboard</a></li>
         <li class="nav-item"><a href="./user_management.html" class="nav-link active text-teal fw-semibold">User Management</a></li>
-        <li class="nav-item"><a href="./order_management.html" class="nav-link text-dark">Order Management</a></li>
-        <li class="nav-item"><a href="./inventory_management.html" class="nav-link text-dark">Inventory</a></li>
+        <li class="nav-item"><a href="./order_management.html" class="nav-link">Order Management</a></li>
+        <li class="nav-item"><a href="./inventory_management.html" class="nav-link">Inventory</a></li>
         <li class="nav-item mt-3"><a href="#" class="nav-link text-danger">Logout</a></li>
       </ul>
     </div>
@@ -75,7 +51,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="text-deep-teal fw-bold">User Management</h3>
         <div>
-          <button class="btn btn-dark me-2" onclick="window.location.href='../index.html';">Go to Website</button>
+          <button class="btn btn-dark me-2" onclick="window.location.href='../index.html'">Go to Website</button>
           <button class="btn btn-teal"><i class="bi bi-person-plus me-1"></i> Add User</button>
         </div>
       </div>
@@ -103,7 +79,7 @@
 
       <!-- Table -->
       <div class="table-responsive rounded shadow-sm">
-        <table class="table table-bordered align-middle bg-white" id="userTable">
+        <table class="table table-bordered align-middle bg-white">
           <thead class="table-light">
             <tr>
               <th>Name</th>
@@ -113,11 +89,13 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody id="userTableBody"></tbody>
+          <tbody id="userTableBody">
+            <!-- rows injected by JS -->
+          </tbody>
         </table>
       </div>
 
-      <!-- Pagination (Structured like the image) -->
+      <!-- Pagination -->
       <div class="d-flex justify-content-center mt-4">
         <nav>
           <ul class="pagination mb-0" id="paginationContainer"></ul>
@@ -126,7 +104,9 @@
     </div>
   </div>
 
-  <script src="./services/userManagement.js"></script>
-
+  <!-- Nav behavior (if any) -->
+  <script src="services/nav.js"></script>
+  <!-- User management logic -->
+  <script src="services/userManagement.js"></script>
 </body>
 </html>
