@@ -1,5 +1,7 @@
 // services/editProfile.js
 
+import { renderCart } from './cart.js';
+
 // Utility to show messages
 function showMessage(msg, type = 'success') {
   const msgDiv = document.getElementById('editMsg');
@@ -37,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('street').value  = addr.street  || '';
     // Set preview image
     preview.src = user.profilePic || './assets/images/emptyProfilePicture.png';
+    renderCart();
   })
   .catch(err => {
     console.error('Prefill error:', err);
@@ -98,4 +101,5 @@ document.addEventListener('DOMContentLoaded', () => {
       showMessage('An error occurred', 'error');
     }
   });
+ 
 });

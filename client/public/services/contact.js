@@ -1,3 +1,5 @@
+import { renderCart, removeFromCart } from './cart.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contactForm');
   const token = localStorage.getItem('token');
@@ -60,4 +62,5 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Something went wrong. Please try again later.');
     }
   });
+  renderCart(); // Call renderCart to update the cart in the offcanvas
 });
