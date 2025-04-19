@@ -33,4 +33,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Dashboard load error', err);
     window.location.href = '../../login.html';
   }
+
+  // Logout button
+const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', e => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = '../../login.html';
+    });
+  }
 });

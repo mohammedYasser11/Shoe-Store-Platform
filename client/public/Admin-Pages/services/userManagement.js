@@ -168,4 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial fetch
   fetchUsers();
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', e => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = '../../login.html';
+    });
+  }
 });

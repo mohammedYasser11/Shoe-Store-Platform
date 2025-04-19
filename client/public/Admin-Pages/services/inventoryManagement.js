@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  const token = localStorage.getItem('token');
+  if (!token) return window.location.href = '../../login.html';
+
+  try {
+    const res = await fetch('/api/admin/inventory_management.js', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (res.status === 401 || res.status === 403) {
+      return window.location.href = '../../login.html';
+    }
+
+
     const productContainer = document.querySelector('.product-container');
   
     // Fetch products from the server
@@ -52,4 +64,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.error('Error fetching products:', err);
       productContainer.innerHTML = '<p class="text-danger">Failed to load products. Please try again later.</p>';
     }
-  });
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', e => {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = '../../login.html';
+    });
+  }
+  // finally reveal the page
+  document.body.classList.remove('hidden');
+}
+
+catch (err) {
+    console.error('Dashboard load error', err);
+    window.location.href = '../../login.html';
+  }
+});
