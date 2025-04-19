@@ -7,12 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchOrders() {
         try {
-            const res = await fetch('/api/orders', {
+            const res = await fetch('/api/order', {
             headers: { 'Authorization': `Bearer ${token}` }
             });
+            const orders = await res.json();
+            console.log('Fetched orders:', orders);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
     
-            const orders = await res.json();
             tbody.innerHTML = orders.map(o => `
             <tr>
                 <td>#${o._id.slice(-8).toUpperCase()}</td>
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </tr>
             `).join('');
         } catch (err) {
+            console.log("I'm here")
             console.error('Error loading orders:', err);
             tbody.innerHTML = `
             <tr>
