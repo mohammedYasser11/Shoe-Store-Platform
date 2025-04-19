@@ -8,21 +8,21 @@ const { getDashboardStats } = require('../controllers/adminController');
 
 const router = express.Router();
 
-// All /api/admin/* require an admin token
+// All /api/* require an admin token
 router.use(protect, adminOnly);
 
 // Dashboard stats
-router.get('/admin/dashboard', getDashboardStats);
+router.get('/dashboard', getDashboardStats);
 
 // User management
-router.get ('/admin/users',       getAllUsers);
-router.get ('/admin/users/:id',   getUserById);
-router.post('/admin/users',       createUser);
-router.put ('/admin/users/:id',   updateUser);
-router.delete('/admin/users/:id', deleteUser);
+router.get ('/users',       getAllUsers);
+router.get ('/users/:id',   getUserById);
+router.post('/users',       createUser);
+router.put ('/users/:id',   updateUser);
+router.delete('/users/:id', deleteUser);
 
 // Order management
-router.get ('/admin/orders',         getAllOrders);
-router.put ('/admin/orders/:id',     updateOrderStatus);
+router.get ('/orders',         getAllOrders);
+router.put ('/orders/:id',     updateOrderStatus);
 
 module.exports = router;
