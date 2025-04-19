@@ -26,8 +26,8 @@ app.use('/api/users',userRoutes );
 app.use('/api/products', productRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/cart', cartRoutes);
-app.use('/api', adminRouter);
-app.use('/api/orders', ordersRoutes);
+app.use('/api/order', ordersRoutes);
+app.use('/api/admin', adminRouter);
 
 
 
