@@ -11,7 +11,7 @@ const { getUserOrders } = require('../controllers/ordersController');
 // 1) Apply the JWT check to **all** routes in this router
 router.use(protect);
 
-// 2) GET /api/orders — returns only the authenticated user’s orders
+// 2) GET /api/order — returns only the authenticated user’s orders
 router.get('/', getUserOrders);
 
 module.exports = router;
