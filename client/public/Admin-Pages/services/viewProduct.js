@@ -59,3 +59,40 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.body.innerHTML = '<p class="text-danger">Failed to load product details. Please try again later.</p>';
     }
 });
+
+function resupplyProduct(){
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+    const variantId = params.get('variantId');
+    const newQuantity = document.querySelector('#resupply-quantity').value;
+  
+    if (!newQuantity) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+    if (!token) {
+        alert('You must be logged in to perform this action.');
+        window.location.href = '/login.html'; // Redirect to login page if not logged in
+        return;
+    }
+    
+    fetch(`/api/admin/products/${productId}/variants/${variantId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ stock: newQuantity })
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert('Product re-supplied successfully!');
+      window.location.reload(); // Reload the page to see updated data
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Failed to re-supply product. Please try again later.');
+    });
+}
