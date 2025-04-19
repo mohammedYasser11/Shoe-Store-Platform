@@ -4,7 +4,7 @@ const {
   getAllUsers, getUserById, createUser, updateUser, deleteUser
 } = require('../controllers/usersController');
 const { getAllOrders, updateOrderStatus } = require('../controllers/orderController');
-const { getDashboardStats } = require('../controllers/adminController');
+const { getDashboardData }    = require('../controllers/adminController');
 const { updateVariantStock } = require('../controllers/productController');
 
 const router = express.Router();
@@ -13,7 +13,7 @@ const router = express.Router();
 router.use(protect, adminOnly);
 
 // Dashboard stats
-router.get('/dashboard', getDashboardStats);
+router.get('/dashboard', getDashboardData);
 
 // User management
 router.get ('/users',       getAllUsers);
@@ -27,6 +27,6 @@ router.get ('/orders',         getAllOrders);
 router.put ('/orders/:id',     updateOrderStatus);
 
 // Inventory management
-router.put('/admin/products/:productId/variants/:variantId', updateVariantStock); // Add the route here
+router.put('/products/:productId/variants/:variantId', updateVariantStock); // Add the route here
 
 module.exports = router;
