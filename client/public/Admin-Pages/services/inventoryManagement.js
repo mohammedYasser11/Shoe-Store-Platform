@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return product.variants.map(variant => {
           // Determine card background color based on stock quantity
           let backgroundColor;
-          if (variant.stock > 50) {
+          if (variant.stock > 5) {
             backgroundColor = '#50C878'; // Green for high stock
-          } else if (variant.stock > 20) {
+          } else if (variant.stock > 4) {
             backgroundColor = '#ffe135'; // Yellow for medium stock
           } else {
             backgroundColor = '#ED2939'; // Red for low stock
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <p>Size: ${variant.size}</p>
                 <p>Price: $${product.price.toFixed(2)}</p>
                 <p>Available: ${variant.stock}</p>
-                <a href="/client/public/Admin-Pages/view_product.html?id=${product._id}&variantId=${variant._id}" class="btn btn-primary">View</a>
+                <a href="./view_product.html?id=${product._id}&variantId=${variant._id}" class="btn btn-primary">View</a>
               </div>
             </div>
           `;
