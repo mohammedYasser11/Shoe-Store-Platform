@@ -199,9 +199,16 @@ document.addEventListener('DOMContentLoaded', () => {
               return '';
             }
       
+            // Find the correct image for the variant
+            const sanitizedColor = variant.color.toLowerCase().replace(/\s+/g, '');
+            const sanitizedProductName = item.productId.name.toLowerCase().replace(/\s+/g, '');
+            const variantImage = item.productId.images.find(image =>
+              image.toLowerCase().includes(`${sanitizedProductName}-${sanitizedColor}`)
+            ) || '/assets/images/placeholder.jpg'; // Fallback to placeholder if no match
+      
             return `
               <div class="d-flex align-items-start mb-4 border-bottom pb-3">
-                <img src="${item.productId.images[0] || '/assets/images/placeholder.jpg'}" 
+                <img src="${variantImage}" 
                      alt="${item.productId.name}" 
                      class="img-thumbnail me-3" 
                      style="width: 80px; height: 80px; object-fit: cover;">
