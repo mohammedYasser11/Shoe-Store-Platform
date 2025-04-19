@@ -13,19 +13,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const data = await res.json();
 
     // 1) fill the stat cards
-    document.getElementById('userCount').textContent  = data.userCount.toLocaleString();
-    document.getElementById('orderCount').textContent = data.orderCount.toLocaleString();
+    document.getElementById('userCount').textContent    = data.userCount.toLocaleString();
+    document.getElementById('orderCount').textContent   = data.orderCount.toLocaleString();
     document.getElementById('productCount').textContent = data.productCount.toLocaleString();
     document.getElementById('revenueCount').textContent = `$${data.totalSales.toFixed(2)}`;
 
-    // 2) update the chart (salesChart is global from your inline <script>)
+    // 2) update the chart (salesChart is global)
     if (Array.isArray(data.sales) && window.salesChart) {
-      salesChart.data.labels  = data.sales.map(pt => pt.day);
-      salesChart.data.datasets[0].data = data.sales.map(pt => pt.amount);
+      salesChart.data.labels             = data.sales.map(pt => pt.day);
+      salesChart.data.datasets[0].data   = data.sales.map(pt => pt.amount);
       salesChart.update();
     }
 
     
+
     // finally reveal the page
     document.body.classList.remove('hidden');
   } catch (err) {

@@ -38,7 +38,7 @@ exports.getDashboardData = async (req, res) => {
     // map to { day:'Mon', amount: 1234 }
     const sales = salesAgg.map(item => ({
       day: new Date(item._id)
-             .toLocaleDateString('en-US',{ weekday:'short' }),
+            .toLocaleDateString('en-US',{ weekday:'short' }),
       amount: item.dayTotal
     }));
 
