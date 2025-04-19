@@ -1,4 +1,5 @@
 // services/index.js
+import { renderCart, removeFromCart } from './cart.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const homeContainer  = document.getElementById('homeProducts');
@@ -95,4 +96,5 @@ document.addEventListener('DOMContentLoaded', () => {
       picksContainer.innerHTML = '<p class="text-center text-danger">Could not load top picks.</p>';
     }
   }
+  renderCart(); // Call renderCart to initialize the cart display
 });

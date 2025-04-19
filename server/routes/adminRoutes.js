@@ -5,6 +5,7 @@ const {
 } = require('../controllers/usersController');
 const { getAllOrders, updateOrderStatus } = require('../controllers/orderController');
 const { getDashboardStats } = require('../controllers/adminController');
+const { updateVariantStock } = require('../controllers/productController');
 
 const router = express.Router();
 
@@ -24,5 +25,8 @@ router.delete('/users/:id', deleteUser);
 // Order management
 router.get ('/orders',         getAllOrders);
 router.put ('/orders/:id',     updateOrderStatus);
+
+// Inventory management
+router.put('/admin/products/:productId/variants/:variantId', updateVariantStock); // Add the route here
 
 module.exports = router;

@@ -86,3 +86,65 @@ exports.getRelatedProducts = async (req, res) => {
     res.status(500).json({ message: 'Error fetching related products', error: err.message });
   }
 };
+
+// GET /api/products/:productId/variants/:variantId
+// Controller to get a specific product variant
+exports.getProductVariant = async (req, res) => {
+  const { productId, variantId } = req.params;
+
+  try {
+    // Find the product by its ID
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Find the specific variant by its ID
+    const variant = product.variants.find(v => v._id.toString() === variantId);
+    if (!variant) {
+      return res.status(404).json({ message: 'Variant not found' });
+    }
+
+    // Return the product and the specific variant
+    res.json({ product, variant });
+  } catch (err) {
+    console.error('Error fetching product variant:', err);
+    res.status(500).json({ message: 'Failed to fetch product variant' });
+  }
+};
+
+// Controller to update stock for a specific product variant
+exports.updateVariantStock = async (req, res) => {
+  const { productId, variantId } = req.params; // Extract productId and variantId from the route parameters
+  const { stock } = req.body; // Extract the new stock value from the request body
+
+  // Validate the stock value
+  if (!stock || isNaN(stock)) {
+    return res.status(400).json({ message: 'Invalid stock value' });
+  }
+
+  try {
+    // Find the product by its ID
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Find the specific variant by its ID
+    const variant = product.variants.find(v => v._id.toString() === variantId);
+    if (!variant) {
+      return res.status(404).json({ message: 'Variant not found' });
+    }
+
+    // Update the stock for the variant
+    variant.stock += parseInt(stock, 10);
+
+    // Save the updated product
+    await product.save();
+
+    res.status(200).json({ message: 'Stock updated successfully', product });
+  } catch (err) {
+    console.error('Error updating variant stock:', err);
+    res.status(500).json({ message: 'Failed to update stock' });
+  }
+};

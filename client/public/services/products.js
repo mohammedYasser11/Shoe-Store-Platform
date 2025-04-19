@@ -1,3 +1,5 @@
+import { renderCart } from './cart.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const container   = document.getElementById('shoe-products');
   const errorDiv    = document.getElementById('productsError');
@@ -68,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>`;
         container.appendChild(col);
+        renderCart(); // Call renderCart to display the cart items in the offcanvas.
       });
     } catch (err) {
       console.error('Failed to load products:', err);
@@ -110,4 +113,5 @@ document.addEventListener('DOMContentLoaded', () => {
       loadProducts('', activeCategory);
     });
   });
+  
 });
