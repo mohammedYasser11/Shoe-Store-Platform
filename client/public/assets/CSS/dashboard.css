@@ -1,0 +1,39 @@
+body {
+  background-color: #f8f9fa;
+}
+
+body.hidden {
+  display: none !important;
+}
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #fff;
+  border-right: 1px solid #dee2e6;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px;
+}
+
+.sidebar .nav-link {
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: #f3f3f3;
+}
+
+.main-content {
+  margin-left: 270px;
+  padding: 30px 20px;
+}
+
+.card-icon {
+  font-size: 1.8rem;
+}
