@@ -3,12 +3,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!token) return window.location.href = '../../login.html';
 
   try {
-    const res = await fetch('/api/admin/inventory_management.js', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (res.status === 401 || res.status === 403) {
-      return window.location.href = '../../login.html';
-    }
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.replace('../../login.html');
+      return;
+  }
 
 
     const productContainer = document.querySelector('.product-container');
