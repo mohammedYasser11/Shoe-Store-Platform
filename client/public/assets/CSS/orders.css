@@ -40,8 +40,12 @@ body {
     color: #000;
   }
   
-  .status-canceled {
+  .status-cancelled {
     background-color: #dc3545;
+    color: #000;
+  }
+  .status-processing {
+    background-color: #f0ad4e;
     color: #000;
   }
     
