@@ -11,8 +11,6 @@ function showMessage(msg, type = 'success') {
 
 document.addEventListener('DOMContentLoaded', () => {
   const form    = document.getElementById('editProfileForm');
-  const preview = document.getElementById('profilePreview');
-  const input   = document.getElementById('profileImage');
   const token   = localStorage.getItem('token');
 
   if (!token) {
@@ -37,8 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('city').value    = addr.city    || '';
     document.getElementById('zip').value     = addr.zip     || '';
     document.getElementById('street').value  = addr.street  || '';
-    // Set preview image
-    preview.src = user.profilePic || './assets/images/emptyProfilePicture.png';
     renderCart();
   })
   .catch(err => {
@@ -46,19 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showMessage('Failed to load profile', 'error');
   });
 
-  // 2) Preview newly selected image
-  if (input) {
-    input.addEventListener('change', () => {
-      const file = input.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => preview.src = e.target.result;
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-
-  // 3) Handle form submit with optional image
+  // 2) Handle form submit with optional image
   form.addEventListener('submit', async e => {
     e.preventDefault();
     showMessage('', '');
@@ -75,11 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
     formData.append('address[city]',    document.getElementById('city').value.trim());
     formData.append('address[zip]',     document.getElementById('zip').value.trim());
     formData.append('address[street]',  document.getElementById('street').value.trim());
-
-    // Image file
-    if (input.files.length > 0) {
-      formData.append('profilePicture', input.files[0]);
-    }
 
     try {
       const res = await fetch('/api/users/me', {
@@ -101,5 +80,5 @@ document.addEventListener('DOMContentLoaded', () => {
       showMessage('An error occurred', 'error');
     }
   });
- 
+
 });
