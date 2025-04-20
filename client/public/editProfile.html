@@ -44,14 +44,16 @@
                 </ul>
             </div>
             <!-- Cart Button -->
-            <button class="btn btn-outline-dark ms-3 me-2" type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#cartSidebar" aria-controls="cartSidebar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart2"
-                viewBox="0 0 16 16">
-                <path
-                d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
-            </svg>
-            </button>
+            <div id="cartButtonContainer">
+                <button class="btn btn-outline-dark ms-3 me-2" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#cartSidebar" aria-controls="cartSidebar" id="cartButton">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart2"
+                    viewBox="0 0 16 16">
+                    <path
+                    d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
+                </svg>
+                </button>
+            </div>
 
             <!-- Search Form -->
             <form class="d-flex" role="search">
@@ -76,18 +78,6 @@
             Your profile has been updated successfully!
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <!-- Profile Photo Upload -->
-            <!-- Profile Photo Upload -->
-<!-- <div class="mb-4 text-center">
-    <img id="profilePreview" src="./assets/images/logo.jpg" alt="Profile Photo" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover; border: 2px solid #ccc;">
-    
-    <div class="d-flex justify-content-center">
-      <label for="profileImage" class="btn btn-outline-dark btn-sm">
-        <i class="bi bi-upload me-1"></i> Choose Photo
-      </label>
-      <input type="file" id="profileImage" accept="image/*" class="d-none">
-    </div>
-  </div> -->
   
 
             <form id="editProfileForm">
@@ -187,32 +177,6 @@
     </div>
     
     <div class="offcanvas-body">
-
-    <!-- Cart Item 1 -->
-        <div class="d-flex align-items-start mb-4 border-bottom pb-3">
-            <img src="./assets/images/shoe1.jpg" alt="Product" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
-            <div class="flex-grow-1">
-            <h6 class="mb-1">Nike Air Max</h6>
-            <p class="text-muted small mb-2">$120.00</p>
-            <div class="d-flex align-items-center gap-2">
-                <input type="number" class="form-control form-control-sm" value="1" min="1" style="width: 60px;">
-                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-            </div>
-            </div>
-        </div>
-    
-        <!-- Cart Item 2 -->
-        <div class="d-flex align-items-start mb-4 border-bottom pb-3">
-            <img src="./assets/images/shoe2.jpg" alt="Product" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
-            <div class="flex-grow-1">
-            <h6 class="mb-1">Adidas Ultraboost</h6>
-            <p class="text-muted small mb-2">$95.00</p>
-            <div class="d-flex align-items-center gap-2">
-                <input type="number" class="form-control form-control-sm" value="2" min="1" style="width: 60px;">
-                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-            </div>
-            </div>
-        </div>
     
         <!-- Cart Total -->
         <div class="d-flex justify-content-between fw-semibold mt-4 mb-3">
