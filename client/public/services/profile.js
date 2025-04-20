@@ -1,3 +1,5 @@
+import { renderCart } from "./cart.js";
+
 function setField(id, value) {
   const el = document.getElementById(id);
   const label = el.previousElementSibling;
@@ -51,4 +53,5 @@ document.addEventListener('DOMContentLoaded', () => {
   .catch(err => {
     console.error('Error fetching profile:', err);
   });
+  renderCart(); // Render the cart in the offcanvas
 });

@@ -1,5 +1,5 @@
 // client/public/services/order.js
-
+import { renderCart, removeFromCart } from './cart.js';
 // (1) Inline guard is in the HTML <head>. Here we proceed assuming a token is present.
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
@@ -43,6 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </tr>`;
         }
     }
-    
+    renderCart(); // Render the cart sidebar
     fetchOrders();
 });

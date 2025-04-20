@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('city').value    = addr.city    || '';
     document.getElementById('zip').value     = addr.zip     || '';
     document.getElementById('street').value  = addr.street  || '';
-    renderCart();
+    
   })
   .catch(err => {
     console.error('Prefill error:', err);
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     formData.append('address[city]',    document.getElementById('city').value.trim());
     formData.append('address[zip]',     document.getElementById('zip').value.trim());
     formData.append('address[street]',  document.getElementById('street').value.trim());
-
+    
     try {
       const res = await fetch('/api/users/me', {
         method: 'PUT',
@@ -80,5 +80,5 @@ document.addEventListener('DOMContentLoaded', () => {
       showMessage('An error occurred', 'error');
     }
   });
-
+  renderCart();
 });

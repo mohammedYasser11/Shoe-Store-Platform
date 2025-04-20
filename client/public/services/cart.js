@@ -1,5 +1,4 @@
 export async function renderCart() {
-    console.log('renderCart called');
     const token = localStorage.getItem('token');
     if (!token) {
       document.getElementById('cartSidebar').innerHTML = '<p class="text-danger">Please log in to view your cart.</p>';
