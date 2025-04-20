@@ -72,8 +72,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.location.href = '../../login.html';
     });
   }
-  // finally reveal the page
-  document.body.classList.remove('hidden');
 }
 
 catch (err) {
