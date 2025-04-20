@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('token');
   if (!token) {
-    return window.location.href = '/login.html';
+    return window.location.href = '../../login.html';
   }
 
   // UI elements
