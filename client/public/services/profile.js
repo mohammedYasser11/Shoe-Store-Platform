@@ -47,12 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setField('profileZip',     address.zip);
     setField('profileStreet',  address.street);
 
-    // 4. Handle profile image
-    const imgEl = document.getElementById('profileImage');
-    // If they have a custom profilePicture, use it; otherwise leave the default.
-    if (userData.profilePicture) {
-      imgEl.src = userData.profilePicture;
-    }
   })
   .catch(err => {
     console.error('Error fetching profile:', err);
