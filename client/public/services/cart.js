@@ -19,7 +19,10 @@ export async function renderCart() {
       }
   
       const cart = await res.json();
-      const cartContainer = document.querySelector('.offcanvas-body');
+      let cartContainer = document.querySelector('.offcanvas-body');
+      const newCartContainer = cartContainer.cloneNode(false);
+      cartContainer.parentNode.replaceChild(newCartContainer, cartContainer);
+      cartContainer = newCartContainer;
   
       if (cart.items.length === 0) {
         cartContainer.innerHTML = '<p class="text-muted">Your cart is empty.</p>';
