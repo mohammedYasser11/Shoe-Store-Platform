@@ -52,7 +52,7 @@ export async function renderCart() {
               <p class="text-muted small mb-2">$${item.productId.price.toFixed(2)}</p>
               <p class="text-muted small mb-2">Color: ${variant.color}, Size: ${variant.size}</p>
               <div class="d-flex align-items-center gap-2">
-                <input type="number" class="form-control form-control-sm" value="${item.quantity}" min="1" style="width: 60px;">
+                <input type="number" class="form-control form-control-sm quantity-input" value="${item.quantity}" min="1" style="width: 60px;" data-item-id="${item._id}">
                 <button class="btn btn-sm btn-outline-danger delete-button">
                   <i class="bi bi-trash"></i>
                 </button>
@@ -78,40 +78,80 @@ export async function renderCart() {
         <button class="btn btn-dark w-100" onclick="window.location.href='./checkout.html'">Checkout</button>
       `;
   
-      // Attach event listener for delete buttons using event delegation
+      // Use event delegation for delete buttons
       cartContainer.addEventListener('click', (event) => {
-        if (event.target.closest('.delete-button')) {
-          const itemId = event.target.closest('.d-flex.align-items-start').dataset.itemId;
+        const deleteButton = event.target.closest('.delete-button');
+        if (deleteButton) {
+          const itemId = deleteButton.closest('.d-flex.align-items-start').dataset.itemId;
           removeFromCart(itemId);
         }
+      });
+
+      // Attach event listener for quantity input changes
+      const quantityInputs = cartContainer.querySelectorAll('.quantity-input');
+      quantityInputs.forEach(input => {
+        input.addEventListener('input', (event) => {
+          const itemId = event.target.dataset.itemId;
+          const newQuantity = parseInt(event.target.value, 10);
+          if (newQuantity >= 1) {
+            updateCartItemQuantity(itemId, newQuantity);
+          }
+        });
       });
     } catch (err) {
       console.error('Error fetching cart:', err);
       document.querySelector('.offcanvas-body').innerHTML = '<p class="text-danger">Failed to load cart.</p>';
     }
+}
+
+export function updateCartItemQuantity(itemId, quantity) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('You must be logged in to update the cart.');
+    window.location.href = 'login.html';
+    return;
   }
-  
-  export function removeFromCart(itemId) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('You must be logged in to remove items from the cart.');
-      window.location.href = 'login.html';
-      return;
-    }
-  
-    fetch(`/api/cart/${itemId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+
+  fetch(`/api/cart/${itemId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ quantity })
+  })
+    .then(res => res.json())
+    .then(() => {
+      console.log('Cart item quantity updated successfully!');
+      renderCart(); // Re-render the cart to reflect the updated quantity
     })
-      .then(res => res.json())
-      .then(() => {
-        alert('Item removed from cart!');
-        renderCart(); // Re-render the cart after removing the item
-      })
-      .catch(err => {
-        console.error('Error removing item from cart:', err);
-        alert('Failed to remove item from cart.');
-      });
+    .catch(err => {
+      console.error('Error updating cart item quantity:', err);
+      alert('Failed to update cart item quantity.');
+    });
+}
+  
+export function removeFromCart(itemId) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('You must be logged in to remove items from the cart.');
+    window.location.href = 'login.html';
+    return;
   }
+
+  fetch(`/api/cart/${itemId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+    .then(res => res.json())
+    .then(() => {
+      alert('Item removed from cart!');
+      renderCart(); // Re-render the cart after removing the item
+    })
+    .catch(err => {
+      console.error('Error removing item from cart:', err);
+      alert('Failed to remove item from cart.');
+    });
+}
