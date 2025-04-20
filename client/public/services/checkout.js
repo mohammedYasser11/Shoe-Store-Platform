@@ -1,3 +1,5 @@
+import { renderCart } from './cart.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
   const cartList = document.getElementById('cart-items');
   const totalPriceEl = document.getElementById('total-price');
@@ -99,3 +101,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+
+// Render the cart in the offcanvas
+renderCart();
