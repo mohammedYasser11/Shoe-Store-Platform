@@ -4,6 +4,14 @@ export async function renderCart() {
       document.getElementById('cartSidebar').innerHTML = '<p class="text-danger">Please log in to view your cart.</p>';
       return;
     }
+    
+    if(window.location.pathname === '/editProfile.html') {
+      // hide the cart button
+      const cartButton = document.getElementById('cartButtonContainer');
+      if (cartButton) {
+        cartButton.hidden = true;
+      }
+    }
   
     try {
       const res = await fetch('/api/cart', {
