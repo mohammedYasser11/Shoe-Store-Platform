@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1) Redirect if not logged in
   const token = localStorage.getItem('token');
   if (!token) {
-    window.location.replace('login.html');
+    window.location.replace('../../login.html');
     return;
   }
 
