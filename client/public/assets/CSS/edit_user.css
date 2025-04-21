@@ -1,7 +1,131 @@
-body { background-color: #eae7df; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .text-teal { color: #54a3a4; }
-    .text-deep-teal { color: #016870; }
-    .btn-teal { background-color: #54a3a4; color: #fff; border: none; }
-    .btn-teal:hover { background-color: #016870; }
-    .sidebar { min-width: 240px; height: 100vh; }
-    .form-container { max-width: 480px; margin: auto; }
+/* ========== Global & Layout ========== */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #eae7df;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.d-flex {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ========== Sidebar ========== */
+.sidebar {
+  min-width: 240px;
+  height: 100%;
+  background-color: #fff;
+  border-right: 1px solid #dee2e6;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebar .fw-bold {
+  color: #333;
+}
+
+.sidebar .nav-link {
+  color: #333;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #f3f3f3;
+  color: #016870;
+}
+
+.sidebar .nav-item.mt-3 .nav-link.text-danger {
+  color: #e63946;
+}
+
+.sidebar .nav-item.mt-3 .nav-link.text-danger:hover {
+  background-color: rgba(230, 57, 70, 0.1);
+}
+
+/* ========== Main Content ========== */
+.d-flex > .flex-grow-1 {
+  background-color: #eae7df;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* ========== Typography & Colors ========== */
+.text-teal {
+  color: #54a3a4 !important;
+}
+
+.text-deep-teal {
+  color: #016870 !important;
+}
+
+/* ========== Back Button ========== */
+#backBtn {
+  border-radius: 0.5rem;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+#backBtn:hover {
+  background-color: #f3f3f3;
+  border-color: #016870;
+  color: #016870;
+}
+
+/* ========== Form Card ========== */
+.form-container {
+  max-width: 480px;
+  margin: auto;
+}
+
+.card.shadow-sm.form-container {
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== Form Elements ========== */
+.form-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #54a3a4;
+  box-shadow: 0 0 0 0.2rem rgba(84, 163, 164, 0.25);
+}
+
+/* ========== Save Button ========== */
+#submitBtn {
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+    background-color: #54a3a4;
+  transition: background 0.2s;
+}
+
+#submitBtn:hover {
+  background-color: #016870;
+}
+
+/* ========== Feedback Message ========== */
+#formMsg {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  min-height: 1.25rem;
+}

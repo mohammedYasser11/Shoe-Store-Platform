@@ -14,21 +14,21 @@
   <!-- CSS & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <link href="client\public\assets\CSS\add_user.css" rel="stylesheet" />
+  <link href="../assets/CSS/add_user.css" rel="stylesheet" />
   
 </head>
 <body>
-  <div class="d-flex">
+  <div class="wrapper d-flex">
     <!-- Sidebar -->
-    <div class="bg-white p-3 shadow-sm sidebar">
-      <h5 class="fw-bold mb-4">Admin Panel</h5>
-      <ul class="nav flex-column">
-        <li class="nav-item"><a href="./dashboard.html" class="nav-link">Dashboard</a></li>
-        <li class="nav-item"><a href="./user_management.html" class="nav-link">User Management</a></li>
-        <li class="nav-item"><a href="./order_management.html" class="nav-link">Order Management</a></li>
-        <li class="nav-item"><a href="./inventory_management.html" class="nav-link">Inventory</a></li>
-        <li class="nav-item mt-3"><a href="#" class="nav-link text-danger">Logout</a></li>
-      </ul>
+    <div class="sidebar d-flex flex-column">
+      <h4 class="mb-4 fw-bold">Admin Panel</h4>
+      <nav class="nav flex-column">
+        <a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a class="nav-link active" href="user_management.html"><i class="bi bi-people me-2"></i> User Management</a>
+        <a class="nav-link" href="order_management.html"><i class="bi bi-bag-check me-2"></i> Order Management</a>
+        <a class="nav-link" href="inventory_management.html"><i class="bi bi-box-seam me-2"></i> Inventory Management</a>
+        <a id="logoutBtn" class="nav-link mt-auto text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+      </nav>
     </div>
 
     <!-- Main -->
@@ -67,7 +67,7 @@
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-teal">Create User</button>
+            <button id="submitBtn" type="submit" class="btn btn-teal">Create User</button>
             <div id="formMsg" class="mt-3"></div>
           </form>
         </div>
