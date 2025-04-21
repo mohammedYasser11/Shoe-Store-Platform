@@ -1,0 +1,46 @@
+/* reset default body margins and ensure full‑height */
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+/* top‑level flex container */
+.wrapper {
+    display: flex;
+    height: 100vh;            /* fill viewport height */
+    overflow: hidden;         /* prevent double scrollbars */
+}
+
+/* sidebar column */
+.sidebar {
+    flex: 0 0 250px;          /* fixed 250px width */
+    background-color: #fff;
+    border-right: 1px solid #dee2e6;
+    padding: 20px;
+    overflow-y: auto;         /* scroll inside if sidebar content grows */
+}
+
+.sidebar .nav-link { color:#333; font-weight:500; margin-bottom:10px; border-radius:5px; }
+.sidebar .nav-link:hover, .sidebar .nav-link.active { background-color:#f3f3f3; }
+
+th[style*="cursor"] { user-select:none; }
+/* main content column */
+.main-content {
+    flex: 1;                  /* take remaining width */
+    background-color: #eae7df;
+    padding: 20px;
+    overflow-y: auto;         /* scroll the table / page here */
+}
+
+/* your existing styling */
+.text-teal           { color: #54a3a4; }
+.text-deep-teal      { color: #016870; }
+.btn-teal            { background-color: #54a3a4; color: #fff; font-weight: 500; border: none; }
+.btn-teal:hover      { background-color: #016870; }
+.table th, .table td { vertical-align: middle; }
+.badge               { font-size: .9rem; padding: .4em .75em; border-radius: .5rem; }
+.action-btn          { border: none; background: transparent; color: #333; }
+.action-btn:hover    { color: #016870; }
+.pagination .page-link           { color: #54a3a4; background: transparent; border: none; }
+.pagination .active .page-link   { background-color: #54a3a4; color: #fff; border-radius: 6px; }
+.pagination .disabled .page-link { color: #ccc; }

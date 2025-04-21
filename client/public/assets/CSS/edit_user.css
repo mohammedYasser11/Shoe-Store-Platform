@@ -1,0 +1,7 @@
+body { background-color: #eae7df; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .text-teal { color: #54a3a4; }
+    .text-deep-teal { color: #016870; }
+    .btn-teal { background-color: #54a3a4; color: #fff; border: none; }
+    .btn-teal:hover { background-color: #016870; }
+    .sidebar { min-width: 240px; height: 100vh; }
+    .form-container { max-width: 480px; margin: auto; }

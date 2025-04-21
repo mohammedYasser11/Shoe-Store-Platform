@@ -25,9 +25,8 @@ body.hidden {
 }
 
 .sidebar .nav-link:hover,
-.sidebar .nav-link.active {
-  background-color: #f3f3f3;
-}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active { background-color:#f3f3f3; }
 
 .main-content {
   margin-left: 270px;

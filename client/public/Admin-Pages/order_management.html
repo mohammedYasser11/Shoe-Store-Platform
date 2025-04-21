@@ -11,17 +11,7 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <style>
-    body { background-color: #f8f9fa; }
-    .sidebar {
-      width: 250px; height: 100vh; background-color: #fff;
-      border-right:1px solid #dee2e6; position:fixed; top:0; left:0; padding:20px;
-    }
-    .sidebar .nav-link { color:#333; font-weight:500; margin-bottom:10px; border-radius:5px; }
-    .sidebar .nav-link:hover, .sidebar .nav-link.active { background-color:#f3f3f3; }
-    .main-content { margin-left:270px; padding:30px 20px; }
-    th[style*="cursor"] { user-select:none; }
-  </style>
+  <link rel="stylesheet" href="../assets/CSS/order_management.css">
 </head>
 <body>
   <!-- Sidebar -->
@@ -68,13 +58,13 @@
           <thead class="table-light">
             <tr>
               <th>Order ID</th>
-              <th id="sortCustomer" style="cursor:pointer">
+              <th id="sortCustomer">
                 Customer <i class="bi bi-chevron-expand"></i>
               </th>
-              <th id="sortDate" style="cursor:pointer">
+              <th id="sortDate">
                 Date <i class="bi bi-chevron-expand"></i>
               </th>
-              <th id="sortTotal" style="cursor:pointer">
+              <th id="sortTotal">
                 Total <i class="bi bi-chevron-expand"></i>
               </th>
               <th>Status</th>
@@ -84,7 +74,7 @@
           <tbody id="orderTableBody"></tbody>
         </table>
 
-        <div id="noResults" class="text-center text-muted py-4" style="display:none">
+        <div id="noResults" class="text-center text-muted py-4">
           <i class="bi bi-search"></i> No orders found
         </div>
 
