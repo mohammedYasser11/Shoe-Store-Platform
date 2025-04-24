@@ -15,6 +15,52 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let cart;
 
+  // Fetch user data first
+  fetch('/api/auth/me', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(async res => {
+    if (res.status === 401) {
+      window.location.href = 'login.html';
+      return null;
+    }
+    return res.json();
+  })
+  .then(userData => {
+    if (!userData) return;
+
+    // Pre-fill shipping information if user has address data
+    if (userData.address) {
+      // Get all input fields within the shipping address card
+      const shippingCard = document.querySelector('.card.p-4.shadow-sm.mt-4');
+      const inputs = shippingCard.querySelectorAll('input');
+      
+      // Set values for each input
+      inputs[0].value = userData.name || ''; // Full Name
+      inputs[1].value = userData.address.street || ''; // Street Address
+      inputs[2].value = userData.address.city || ''; // City
+      inputs[3].value = userData.address.zip || ''; // Zip Code
+      
+      // Set country
+      const countrySelect = document.getElementById('country');
+      if (countrySelect) {
+        countrySelect.value = userData.address.country || '';
+      }
+
+      // Pre-fill contact information
+      const contactCard = document.querySelectorAll('.card.p-4.shadow-sm.mt-4')[1];
+      const contactInputs = contactCard.querySelectorAll('input');
+      contactInputs[0].value = userData.email || ''; // Email
+      contactInputs[1].value = userData.phone || ''; // Phone
+    }
+  })
+  .catch(err => {
+    console.error('Error fetching user data:', err);
+  });
+
   try {
     // Fetch cart items from the database
     const res = await fetch('/api/cart', {
@@ -63,15 +109,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Handle checkout button click
   checkoutButton.addEventListener('click', async () => {
+    const shippingCard = document.querySelector('.card.p-4.shadow-sm.mt-4');
+    const inputs = shippingCard.querySelectorAll('input');
+    
     const shippingInfo = {
-      address: document.querySelector('input[placeholder="Street Address"]').value,
-      city: document.querySelector('input[placeholder="City"]').value,
-      zip: document.querySelector('input[placeholder="Zip Code"]').value,
+      name: inputs[0].value,
+      address: inputs[1].value,
+      city: inputs[2].value,
+      zip: inputs[3].value,
       country: document.getElementById('country').value
     };
 
-    if (!shippingInfo.address || !shippingInfo.city || !shippingInfo.zip || !shippingInfo.country) {
+    if (!shippingInfo.name || !shippingInfo.address || !shippingInfo.city || !shippingInfo.zip || !shippingInfo.country) {
       alert('Please fill in all shipping information.');
+      return;
+    }
+
+    // Check if terms and conditions are accepted
+    const termsCheckbox = document.getElementById('termsCheck');
+    if (!termsCheckbox.checked) {
+      alert('Please agree to the terms and conditions to proceed.');
       return;
     }
 

@@ -122,15 +122,53 @@ export function updateCartItemQuantity(itemId, quantity) {
     return;
   }
 
-  fetch(`/api/cart/${itemId}`, {
-    method: 'PUT',
+  // First, get the current cart to check stock
+  fetch('/api/cart', {
+    method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify({ quantity })
+    }
   })
     .then(res => res.json())
+    .then(cart => {
+      // Find the item in the cart
+      const cartItem = cart.items.find(item => item._id === itemId);
+      if (!cartItem) {
+        throw new Error('Item not found in cart');
+      }
+
+      // Find the variant to check stock
+      const variant = cartItem.productId.variants.find(v => v._id === cartItem.variantId);
+      if (!variant) {
+        throw new Error('Variant not found');
+      }
+
+      // Check if requested quantity exceeds available stock
+      if (quantity > variant.stock) {
+        alert(`Sorry, only ${variant.stock} items available in stock.`);
+        // Reset the input to the current quantity
+        const input = document.querySelector(`.quantity-input[data-item-id="${itemId}"]`);
+        if (input) {
+          input.value = cartItem.quantity;
+        }
+        return;
+      }
+
+      // If stock is sufficient, proceed with the update
+      return fetch(`/api/cart/${itemId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ quantity })
+      });
+    })
+    .then(res => {
+      if (res) {
+        return res.json();
+      }
+    })
     .then(() => {
       console.log('Cart item quantity updated successfully!');
       renderCart(); // Re-render the cart to reflect the updated quantity
