@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
+const Product = require('../models/Product');
 
 /**
  * GET /api/order
@@ -30,7 +31,28 @@ exports.createOrder = async (req, res) => {
     const { items, shippingInfo, totalPrice } = req.body;
   
     try {
-      // Create a new order
+      // First, check stock availability for all items
+      for (const item of items) {
+        const product = await Product.findById(item.productId._id);
+        if (!product) {
+          return res.status(404).json({ message: `Product ${item.productId._id} not found` });
+        }
+
+        const variant = product.variants.find(v => v._id.toString() === item.variantId);
+        if (!variant) {
+          return res.status(404).json({ message: `Variant ${item.variantId} not found` });
+        }
+
+        if (variant.stock < item.quantity) {
+          return res.status(400).json({ 
+            message: `Insufficient stock for ${product.name} (${variant.color}, ${variant.size})`,
+            availableStock: variant.stock,
+            requestedQuantity: item.quantity
+          });
+        }
+      }
+
+      // If all items have sufficient stock, proceed with order creation
       const order = new Order({
         userId,
         items: items.map(item => ({
@@ -46,9 +68,17 @@ exports.createOrder = async (req, res) => {
         status: 'pending',
         paymentMethod: 'cash_on_delivery' // Default payment method
       });
-  
+
       await order.save();
-  
+
+      // Update stock for each item
+      for (const item of items) {
+        const product = await Product.findById(item.productId._id);
+        const variant = product.variants.find(v => v._id.toString() === item.variantId);
+        variant.stock -= item.quantity;
+        await product.save();
+      }
+
       // Clear the user's cart
       await Cart.findOneAndUpdate({ userId }, { items: [] });
   

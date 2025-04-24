@@ -8,7 +8,7 @@ router.get('/limited', getLimitedProducts);
 router.get('/',    getAll);
 router.get('/:id', getById);
 router.get('/:productId/variants/:variantId', getProductVariant);
-
+router.put('/:productId/variants/:variantId/stock', protect, updateVariantStock);
 
 // Protected (admin)
 router.post('/',   protect, create);

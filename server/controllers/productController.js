@@ -115,11 +115,11 @@ exports.getProductVariant = async (req, res) => {
 
 // Controller to update stock for a specific product variant
 exports.updateVariantStock = async (req, res) => {
-  const { productId, variantId } = req.params; // Extract productId and variantId from the route parameters
-  const { stock } = req.body; // Extract the new stock value from the request body
+  const { productId, variantId } = req.params;
+  const { stock } = req.body;
 
   // Validate the stock value
-  if (!stock || isNaN(stock)) {
+  if (stock === undefined || isNaN(stock)) {
     return res.status(400).json({ message: 'Invalid stock value' });
   }
 
@@ -136,13 +136,29 @@ exports.updateVariantStock = async (req, res) => {
       return res.status(404).json({ message: 'Variant not found' });
     }
 
+    // Calculate new stock value
+    const newStock = variant.stock + parseInt(stock, 10);
+
+    // Check if new stock would be negative
+    if (newStock < 0) {
+      return res.status(400).json({ 
+        message: 'Insufficient stock available',
+        availableStock: variant.stock,
+        requestedReduction: Math.abs(parseInt(stock, 10))
+      });
+    }
+
     // Update the stock for the variant
-    variant.stock += parseInt(stock, 10);
+    variant.stock = newStock;
 
     // Save the updated product
     await product.save();
 
-    res.status(200).json({ message: 'Stock updated successfully', product });
+    res.status(200).json({ 
+      message: 'Stock updated successfully', 
+      product,
+      newStock: variant.stock
+    });
   } catch (err) {
     console.error('Error updating variant stock:', err);
     res.status(500).json({ message: 'Failed to update stock' });
