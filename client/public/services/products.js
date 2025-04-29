@@ -1,3 +1,5 @@
+// services/products.js
+
 import { renderCart } from './cart.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -6,24 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchForm  = document.getElementById('searchForm');
   const searchInput = document.getElementById('searchInput');
 
-  // This variable holds the currently selected category from the sidebar.
   let activeCategory = '';
 
-  // Fetch and render products, optionally filtered by a search term and/or category.
   async function loadProducts(searchTerm = '', category = '') {
     try {
-      // Hide previous errors.
       errorDiv.classList.add('d-none');
       errorDiv.innerText = '';
 
-      // Build URL including any query parameters.
       let url = '/api/products';
-      const queryParams = [];
-      if (searchTerm) queryParams.push(`search=${encodeURIComponent(searchTerm)}`);
-      if (category) queryParams.push(`category=${encodeURIComponent(category)}`);
-      if (queryParams.length) {
-        url += '?' + queryParams.join('&');
-      }
+      const params = [];
+      if (searchTerm) params.push(`search=${encodeURIComponent(searchTerm)}`);
+      if (category)    params.push(`category=${encodeURIComponent(category)}`);
+      if (params.length) url += '?' + params.join('&');
 
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -39,39 +35,56 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Loop through the products array and render each product.
       products.forEach(p => {
-        // Make sure product has variants. If not, skip rendering.
-        if (!p.variants || p.variants.length === 0) return;
+        if (!p.variants?.length) return;
+        const v = p.variants[0]; // primary variant
 
-        // Choose a primary variant (for example, the first one).
-        const primaryVariant = p.variants[0];
+        // image
+        const imageUrl = p.images?.[0] || '/assets/images/placeholder.png';
 
-        // For the image, we display the first image if available.
-        const imageUrl = (p.images && p.images[0])
-          ? p.images[0]
-          : '/assets/images/placeholder.png';
+        // discount logic
+        const hasDiscount = p.discount > 0;
+        const discountedPrice = hasDiscount
+          ? (p.price).toFixed(2)
+          : null;
+        const originalPrice = hasDiscount
+          // reverse‐engineer original: price = orig*(1−disc/100)
+          ? (p.price / (1 - p.discount/100)).toFixed(2)
+          : null;
 
+        // build card
         const col = document.createElement('div');
         col.className = 'col';
         col.innerHTML = `
-          <div class="card h-100">
-            <img
-              src="${imageUrl}"
-              class="card-img-top"
-              alt="${p.name}">
+          <div class="card h-100 position-relative">
+            ${hasDiscount
+              ? `<span class="badge bg-danger position-absolute top-0 end-0 m-2">
+                   -${p.discount}% 
+                 </span>`
+              : ''}
+            <img src="${imageUrl}" class="card-img-top" alt="${p.name}">
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">${p.name}</h5>
-              <p class="card-text text-muted mb-4">$${p.price.toFixed(2)}</p>
-              <a href="product.html?id=${p._id}&color=${encodeURIComponent(primaryVariant.color)}&size=${encodeURIComponent(primaryVariant.size)}"
+              <p class="card-text mb-4">
+                ${hasDiscount
+                  ? `<del class="text-muted me-2">$${originalPrice}</del>
+                     <span class="fw-bold text-danger">$${discountedPrice}</span>`
+                  : `<span class="fw-bold">$${p.price.toFixed(2)}</span>`}
+              </p>
+              <a href="product.html?id=${p._id}
+                         &color=${encodeURIComponent(v.color)}
+                         &size=${encodeURIComponent(v.size)}"
                  class="mt-auto btn btn-sm btn-outline-primary">
                 View
               </a>
             </div>
-          </div>`;
+          </div>`.replace(/\s+/g,' ');
+
         container.appendChild(col);
-        renderCart(); // Call renderCart to display the cart items in the offcanvas.
       });
+
+      // renderCart only once
+      renderCart();
     } catch (err) {
       console.error('Failed to load products:', err);
       errorDiv.innerText = 'Could not load products. Please try again later.';
@@ -79,10 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Initial load (no filter)
+  // initial load
   loadProducts();
 
-  // Wire up the navbar search form if it exists.
+  // search form
   if (searchForm && searchInput) {
     searchForm.addEventListener('submit', e => {
       e.preventDefault();
@@ -90,28 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Category filtering logic.
-  // Query all links inside the sidebar category list.
-  const categoryLinks = document.querySelectorAll('.list-group a.list-group-item');
-  categoryLinks.forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      // Remove active class from all category links.
-      categoryLinks.forEach(l => l.classList.remove('active'));
-      // Add the active class to the clicked link.
-      link.classList.add('active');
-
-      // Get the category filter from the clicked link's text.
-      // If needed, you can instead use a data-category attribute.
-      const categoryText = link.textContent.trim();
-      activeCategory = categoryText;
-
-      // Optionally, clear the search input.
-      searchInput.value = '';
-
-      // Reload products, filtering by the selected category.
-      loadProducts('', activeCategory);
+  // category sidebar
+  document.querySelectorAll('.list-group a.list-group-item')
+    .forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.list-group a.list-group-item')
+                .forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        activeCategory = link.textContent.trim();
+        searchInput.value = '';
+        loadProducts('', activeCategory);
+      });
     });
-  });
-  
 });
