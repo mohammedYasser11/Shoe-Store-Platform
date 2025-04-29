@@ -44,6 +44,19 @@ export async function renderCart() {
           return '';
         }
   
+
+        const original = item.productId.price;
+        const discount = item.productId.discount || 0;
+        // compute the per‐unit sale price
+        const unitPrice = +(original * (1 - discount/100)).toFixed(2);
+
+        const priceHtml = discount > 0
+        ? `<del>$${original.toFixed(2)}</del>
+          <span class="text-danger">$${unitPrice.toFixed(2)}</span>
+          <span class="badge bg-danger">-${discount}%</span>`
+        : `$${unitPrice.toFixed(2)}`;
+
+
         // Find the correct image for the variant
         const sanitizedColor = variant.color.toLowerCase().replace(/\s+/g, '');
         const sanitizedProductName = item.productId.name.toLowerCase().replace(/\s+/g, '');
@@ -59,7 +72,7 @@ export async function renderCart() {
                  style="width: 80px; height: 80px; object-fit: cover;">
             <div class="flex-grow-1">
               <h6 class="mb-1">${item.productId.name}</h6>
-              <p class="text-muted small mb-2">$${item.productId.price.toFixed(2)}</p>
+              <p class="text-muted small mb-2">${priceHtml}</p>
               <p class="text-muted small mb-2">Color: ${variant.color}, Size: ${variant.size}</p>
               <div class="d-flex align-items-center gap-2">
                 <input type="number" class="form-control form-control-sm quantity-input" value="${item.quantity}" min="1" style="width: 60px;" data-item-id="${item._id}">
@@ -75,7 +88,11 @@ export async function renderCart() {
       // Calculate total price
       const totalPrice = cart.items.reduce((total, item) => {
         const variant = item.productId.variants.find(v => v._id === item.variantId);
-        return variant ? total + item.productId.price * item.quantity : total;
+        if (!variant) return total;
+        const orig     = item.productId.price;
+        const disc     = item.productId.discount || 0;
+        const unitPrice= orig * (1 - disc/100);
+        return total + unitPrice * item.quantity;
       }, 0);
   
       // Render cart total and checkout button
