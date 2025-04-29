@@ -72,6 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
               ${size}
             </div>`;
         }).join('');
+// calculate
+const orig = product.price;
+const hasDisc = product.discount > 0;
+const disc  = (orig * (1 - product.discount/100)).toFixed(2);
 
         container.innerHTML = `
           <div class="col-md-6">
@@ -83,8 +87,22 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="col-md-6">
             <h2 class="fw-bold">${product.name}</h2>
-            <h4 class="text-muted">${product.brand || ''}</h4>
-            <p class="text-danger h4" id="productPrice">$${product.price.toFixed(2)}</p>
+            <h6 class="text-muted">${product.brand||''}</h6>
+            ${
+              (() => {
+                const orig = product.price;
+                if (product.discount > 0) {
+                  const disc = (orig * (1 - product.discount/100)).toFixed(2);
+                  return `
+                    <p><del class="text-muted">$${orig.toFixed(2)}</del></p>
+                    <p class="text-danger h4">$${disc}</p>
+                    <span class="badge bg-danger">-${product.discount}%</span>
+                  `;
+                } else {
+                  return `<p class="text-danger h4">$${orig.toFixed(2)}</p>`;
+                }
+              })()
+            }
             <p class="text-muted">${product.description || ''}</p>
 
             <div class="mb-3">
