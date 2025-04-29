@@ -44,12 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // discount logic
         const hasDiscount = p.discount > 0;
+        const originalPrice  = p.price.toFixed(2);
         const discountedPrice = hasDiscount
-          ? (p.price).toFixed(2)
-          : null;
-        const originalPrice = hasDiscount
           // reverse‐engineer original: price = orig*(1−disc/100)
-          ? (p.price / (1 - p.discount/100)).toFixed(2)
+          ? (p.price * (1 - p.discount/100)).toFixed(2)
           : null;
 
         // build card
@@ -69,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${hasDiscount
                   ? `<del class="text-muted me-2">$${originalPrice}</del>
                      <span class="fw-bold text-danger">$${discountedPrice}</span>`
-                  : `<span class="fw-bold">$${p.price.toFixed(2)}</span>`}
+                  : `<span class="fw-bold">$${originalPrice}</span>`}
               </p>
               <a href="product.html?id=${p._id}
                          &color=${encodeURIComponent(v.color)}
