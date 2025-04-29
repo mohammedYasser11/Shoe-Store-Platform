@@ -164,3 +164,23 @@ exports.updateVariantStock = async (req, res) => {
     res.status(500).json({ message: 'Failed to update stock' });
   }
 };
+exports.getProducts = async (req, res) => {
+  try {
+    const { search } = req.query;
+    const filter = {};
+
+    if (search) {
+      // case-insensitive partial match on the `name` field
+      filter.name = { 
+        $regex: search,
+        $options: 'i'
+      };
+    }
+
+    const products = await Product.find(filter).lean();
+    res.json(products);
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).json({ message: 'Server error fetching products.' });
+  }
+};
