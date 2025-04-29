@@ -129,7 +129,9 @@ const disc  = (orig * (1 - product.discount/100)).toFixed(2);
             </form>
           </div>
         `;
-
+        
+        loadReviews();
+        setupReviewForm();
         setupInteraction();
         setupAddToCart();
       }
@@ -241,6 +243,80 @@ const disc  = (orig * (1 - product.discount/100)).toFixed(2);
           }
         });
       };
+
+/**
+ * Fetches and renders reviews for the current product.
+ */
+async function loadReviews() {
+  const reviewsContainer = document.getElementById('reviewsList');
+  reviewsContainer.innerHTML = 'Loading reviews…';
+
+  try {
+    const res = await fetch(`/api/products/${productId}/reviews`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const reviews = await res.json();
+
+    if (reviews.length === 0) {
+      reviewsContainer.innerHTML = '<p class="text-muted">No reviews yet. Be the first!</p>';
+      return;
+    }
+
+    reviewsContainer.innerHTML = reviews.map(r => `
+      <div class="border-bottom py-2">
+        <div>
+          ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}
+          <small class="text-muted">by ${r.userName} on ${new Date(r.createdAt).toLocaleDateString()}</small>
+        </div>
+        <p class="mb-0">${r.comment}</p>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error('Failed to load reviews:', err);
+    reviewsContainer.innerHTML = '<p class="text-danger">Could not load reviews.</p>';
+  }
+}
+
+/**
+ * Sets up the “Leave a Review” form.
+ */
+function setupReviewForm() {
+  const form = document.getElementById('reviewForm');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please log in to submit a review.');
+      return window.location.href = 'login.html';
+    }
+
+    const rating  = parseInt(form.querySelector('#reviewRating').value,  10);
+    const comment = form.querySelector('#reviewComment').value.trim();
+    if (!comment) {
+      return alert('Please enter a comment.');
+    }
+
+    try {
+      const res = await fetch(`/api/products/${productId}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ rating, comment })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || res.statusText);
+      }
+      form.reset();
+      loadReviews();
+    } catch (err) {
+      console.error('Failed to submit review:', err);
+      alert(`Could not submit review: ${err.message}`);
+    }
+  });
+}
+
 
       // Fetch related products remains unchanged.
       async function fetchRelatedProducts() {

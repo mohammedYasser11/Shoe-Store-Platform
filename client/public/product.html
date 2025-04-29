@@ -78,6 +78,34 @@
     </div>
 </div>
 
+    <hr class="my-4">
+
+    <div id="reviewsSection">
+    <h4>Customer Reviews</h4>
+    <div id="reviewsList" class="mb-4">
+        <!-- reviews will load here -->
+    </div>
+    <form id="reviewForm" class="mb-5">
+        <h5>Leave a Review</h5>
+        <div class="mb-3">
+        <label for="reviewRating" class="form-label">Rating</label>
+        <select id="reviewRating" class="form-select w-auto">
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="2">2 - Fair</option>
+            <option value="1">1 - Poor</option>
+        </select>
+        </div>
+        <div class="mb-3">
+        <label for="reviewComment" class="form-label">Comment</label>
+        <textarea id="reviewComment" class="form-control" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+    </div>
+
+
 <!-- Suggested Products -->
 <div class="mt-5" style="margin: 50px;">
     <h5 class="fw-bold mb-4">You might also like</h5>
