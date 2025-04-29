@@ -184,3 +184,23 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error fetching products.' });
   }
 };
+
+exports.updateProductDiscount = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const { discount }  = req.body;
+    if (discount == null || discount < 0 || discount > 100) {
+      return res.status(400).json({ message: 'Discount must be between 0 and 100.' });
+    }
+    const updated = await Product.findByIdAndUpdate(
+      productId,
+      { discount },
+      { new: true, runValidators: true, select: 'discount' }
+    );
+    if (!updated) return res.status(404).json({ message: 'Product not found.' });
+    res.json({ discount: updated.discount });
+  } catch (err) {
+    console.error('Error updating discount:', err);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};

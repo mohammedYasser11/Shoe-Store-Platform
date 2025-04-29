@@ -26,7 +26,14 @@ const productSchema = new mongoose.Schema({
   isFeatured: {
     type: Boolean,
     default: false
+  },
+  discount: {
+    type: Number,
+    default: 0,      // percentage off, e.g. 20 → 20% discount
+    min: 0,
+    max: 100
   }
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);
