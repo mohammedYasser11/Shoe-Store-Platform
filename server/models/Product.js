@@ -1,39 +1,36 @@
 // server/models/Product.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const variantSchema = new mongoose.Schema({
   color: { type: String, required: true },
   size: { type: String, required: true },
-  stock: { type: Number, required: true, default: 0 } // Stock for this specific variant
+  stock: { type: Number, required: true, default: 0 },
+  discount: { type: Number, default: 0, min: 0, max: 100 }, // Newly added discount field per variant
 });
 
-const productSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
+const productSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: String,
+    category: String,
+    brand: String,
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    images: [String], // URLs
+    variants: [variantSchema],
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
   },
-  description: String,
-  category: String,
-  brand: String,
-  price: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  images: [String],        // URLs
-  variants: [variantSchema],
-  isFeatured: {
-    type: Boolean,
-    default: false
-  },
-  discount: {
-    type: Number,
-    default: 0,      // percentage off, e.g. 20 → 20% discount
-    min: 0,
-    max: 100
-  }
+  { timestamps: true }
+);
 
-}, { timestamps: true });
-
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model("Product", productSchema);
