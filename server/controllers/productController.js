@@ -1,4 +1,4 @@
-const Product = require('../models/Product');
+const Product = require("../models/Product");
 
 // GET /api/products
 // Get all products with optional filters
@@ -9,12 +9,12 @@ exports.getAll = async (req, res) => {
 
     // 1. Text search on name (case‑insensitive)
     if (search) {
-      filter.name = { $regex: search, $options: 'i' };
+      filter.name = { $regex: search, $options: "i" };
     }
 
     // 2. Optional: filter by category (using case-insensitive exact match)
     if (category) {
-      filter.category = { $regex: `^${category}$`, $options: 'i' };
+      filter.category = { $regex: `^${category}$`, $options: "i" };
     }
 
     // 3. Optional: price range filtering
@@ -27,7 +27,7 @@ exports.getAll = async (req, res) => {
     const products = await Product.find(filter);
     res.json(products);
   } catch (err) {
-    console.error('GetAll products error:', err);
+    console.error("GetAll products error:", err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -39,15 +39,15 @@ exports.getLimitedProducts = async (req, res) => {
     const products = await Product.find().limit(limit); // Fetch limited products
     res.json(products);
   } catch (err) {
-    console.error('Error fetching limited products:', err);
-    res.status(500).json({ message: 'Error fetching limited products' });
+    console.error("Error fetching limited products:", err);
+    res.status(500).json({ message: "Error fetching limited products" });
   }
 };
 
 // GET /api/products/:id
 exports.getById = async (req, res) => {
   const prod = await Product.findById(req.params.id);
-  if (!prod) return res.status(404).json({ message: 'Not found' });
+  if (!prod) return res.status(404).json({ message: "Not found" });
   res.json(prod);
 };
 
@@ -59,31 +59,35 @@ exports.create = async (req, res) => {
 
 // PUT /api/products/:id   (protected)
 exports.update = async (req, res) => {
-  const prod = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  const prod = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
   res.json(prod);
 };
 
 // DELETE /api/products/:id (protected)
 exports.remove = async (req, res) => {
   await Product.findByIdAndDelete(req.params.id);
-  res.json({ message: 'Deleted' });
+  res.json({ message: "Deleted" });
 };
 
 // GET /api/products/related
 exports.getRelatedProducts = async (req, res) => {
   const { category, brand, exclude } = req.query;
-  console.log('Query Parameters:', { category, brand, exclude });
+  console.log("Query Parameters:", { category, brand, exclude });
   try {
     const filter = {
       category,
-      _id: { $ne: exclude } // Exclude the current product
+      _id: { $ne: exclude }, // Exclude the current product
     };
     // Limit to 4 products for related products
     const relatedProducts = await Product.find(filter).limit(4);
     res.json(relatedProducts);
   } catch (err) {
-    console.error('Error fetching related products:', err);
-    res.status(500).json({ message: 'Error fetching related products', error: err.message });
+    console.error("Error fetching related products:", err);
+    res
+      .status(500)
+      .json({ message: "Error fetching related products", error: err.message });
   }
 };
 
@@ -96,20 +100,22 @@ exports.getProductVariant = async (req, res) => {
     // Find the product by its ID
     const product = await Product.findById(productId);
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     // Find the specific variant by its ID
-    const variant = product.variants.find(v => v._id.toString() === variantId);
+    const variant = product.variants.find(
+      (v) => v._id.toString() === variantId
+    );
     if (!variant) {
-      return res.status(404).json({ message: 'Variant not found' });
+      return res.status(404).json({ message: "Variant not found" });
     }
 
     // Return the product and the specific variant
     res.json({ product, variant });
   } catch (err) {
-    console.error('Error fetching product variant:', err);
-    res.status(500).json({ message: 'Failed to fetch product variant' });
+    console.error("Error fetching product variant:", err);
+    res.status(500).json({ message: "Failed to fetch product variant" });
   }
 };
 
@@ -120,20 +126,22 @@ exports.updateVariantStock = async (req, res) => {
 
   // Validate the stock value
   if (stock === undefined || isNaN(stock)) {
-    return res.status(400).json({ message: 'Invalid stock value' });
+    return res.status(400).json({ message: "Invalid stock value" });
   }
 
   try {
     // Find the product by its ID
     const product = await Product.findById(productId);
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     // Find the specific variant by its ID
-    const variant = product.variants.find(v => v._id.toString() === variantId);
+    const variant = product.variants.find(
+      (v) => v._id.toString() === variantId
+    );
     if (!variant) {
-      return res.status(404).json({ message: 'Variant not found' });
+      return res.status(404).json({ message: "Variant not found" });
     }
 
     // Calculate new stock value
@@ -141,10 +149,10 @@ exports.updateVariantStock = async (req, res) => {
 
     // Check if new stock would be negative
     if (newStock < 0) {
-      return res.status(400).json({ 
-        message: 'Insufficient stock available',
+      return res.status(400).json({
+        message: "Insufficient stock available",
         availableStock: variant.stock,
-        requestedReduction: Math.abs(parseInt(stock, 10))
+        requestedReduction: Math.abs(parseInt(stock, 10)),
       });
     }
 
@@ -154,16 +162,17 @@ exports.updateVariantStock = async (req, res) => {
     // Save the updated product
     await product.save();
 
-    res.status(200).json({ 
-      message: 'Stock updated successfully', 
+    res.status(200).json({
+      message: "Stock updated successfully",
       product,
-      newStock: variant.stock
+      newStock: variant.stock,
     });
   } catch (err) {
-    console.error('Error updating variant stock:', err);
-    res.status(500).json({ message: 'Failed to update stock' });
+    console.error("Error updating variant stock:", err);
+    res.status(500).json({ message: "Failed to update stock" });
   }
 };
+
 exports.getProducts = async (req, res) => {
   try {
     const { search } = req.query;
@@ -171,36 +180,68 @@ exports.getProducts = async (req, res) => {
 
     if (search) {
       // case-insensitive partial match on the `name` field
-      filter.name = { 
+      filter.name = {
         $regex: search,
-        $options: 'i'
+        $options: "i",
       };
     }
 
     const products = await Product.find(filter).lean();
     res.json(products);
   } catch (err) {
-    console.error('Error fetching products:', err);
-    res.status(500).json({ message: 'Server error fetching products.' });
+    console.error("Error fetching products:", err);
+    res.status(500).json({ message: "Server error fetching products." });
   }
 };
 
 exports.updateProductDiscount = async (req, res) => {
   try {
     const { productId } = req.params;
-    const { discount }  = req.body;
+    const { discount } = req.body;
     if (discount == null || discount < 0 || discount > 100) {
-      return res.status(400).json({ message: 'Discount must be between 0 and 100.' });
+      return res
+        .status(400)
+        .json({ message: "Discount must be between 0 and 100." });
     }
     const updated = await Product.findByIdAndUpdate(
       productId,
       { discount },
-      { new: true, runValidators: true, select: 'discount' }
+      { new: true, runValidators: true, select: "discount" }
     );
-    if (!updated) return res.status(404).json({ message: 'Product not found.' });
+    if (!updated)
+      return res.status(404).json({ message: "Product not found." });
     res.json({ discount: updated.discount });
   } catch (err) {
-    console.error('Error updating discount:', err);
-    res.status(500).json({ message: 'Server error.' });
+    console.error("Error updating discount:", err);
+    res.status(500).json({ message: "Server error." });
+  }
+};
+
+exports.updateProductVariantDiscount = async (req, res) => {
+  const { productId, variantId } = req.params;
+  const { discount } = req.body;
+
+  if (discount == null || discount < 0 || discount > 100) {
+    return res
+      .status(400)
+      .json({ message: "Discount must be between 0 and 100." });
+  }
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product)
+      return res.status(404).json({ message: "Product not found." });
+
+    // Locate the specific variant using Mongoose subdocument method
+    const variant = product.variants.id(variantId);
+    if (!variant)
+      return res.status(404).json({ message: "Variant not found." });
+
+    variant.discount = discount;
+    await product.save();
+    res.json({ discount: variant.discount });
+  } catch (err) {
+    console.error("Error updating discount:", err);
+    res.status(500).json({ message: "Server error." });
   }
 };
