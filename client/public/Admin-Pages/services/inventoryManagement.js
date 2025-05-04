@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!res.ok) throw new Error("Failed to fetch products");
     const products = await res.json();
 
-    // 2) Flatten variants + include discount
+    // 2) Flatten variants + include discount from the variant
     const allVariants = products.flatMap((product) =>
       product.variants.map((variant) => ({
         ...variant,
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         productPrice: product.price,
         productImages: product.images,
         productId: product._id,
-        discount: product.discount || 0,
+        discount: variant.discount || 0, // Updated: use variant.discount directly
       }))
     );
 
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="d-flex gap-2">
             <a href="./view_product.html?id=${variant.productId}&variantId=${variant._id}"
                class="btn btn-primary">View</a>
-            <button data-id="${variant.productId}"
+            <button data-id="${variant.productId}" data-variant="${variant._id}"
                 class="btn btn-secondary btn-sm set-discount">
                 Set Discount
             </button>
@@ -94,6 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     productContainer.querySelectorAll(".set-discount").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const productId = btn.dataset.id;
+        const variantId = btn.dataset.variant; // new: get the specific variant id
         const info = btn.closest(".product-info");
         const discountEl = info.querySelector(".current-discount");
         let origPriceEl = info.querySelector(".original-price");
@@ -105,14 +106,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         const pct = Math.min(100, Math.max(0, Number(inp)));
 
         try {
-          const r = await fetch(`/api/admin/products/${productId}/discount`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ discount: pct }),
-          });
+          const r = await fetch(
+            `/api/admin/products/${productId}/discount/${variantId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ discount: pct }),
+            }
+          );
           if (!r.ok) throw new Error(await r.text());
           const data = await r.json();
 
