@@ -102,16 +102,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // category sidebar
-  document.querySelectorAll('.list-group a.list-group-item')
-    .forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        document.querySelectorAll('.list-group a.list-group-item')
-                .forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-        activeCategory = link.textContent.trim();
-        searchInput.value = '';
-        loadProducts('', activeCategory);
-      });
-    });
+  const categoryLinks = document.querySelectorAll('.list-group a.list-group-item');
+categoryLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+
+    // 1) Toggle active class
+    categoryLinks.forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+
+    // 2) Pick up category from data-category or fallback to text
+    activeCategory = link.dataset.category || link.textContent.trim();
+
+    // 3) Clear the search box only if it exists on this page
+    if (searchInput) searchInput.value = '';
+
+    // 4) Reload with the new category filter
+    loadProducts('', activeCategory);
+  });
+});
+
 });
