@@ -1,69 +1,77 @@
 export async function renderCart() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      document.getElementById('cartSidebar').innerHTML = '<p class="text-danger">Please log in to view your cart.</p>';
+  const token = localStorage.getItem("token");
+  if (!token) {
+    document.getElementById("cartSidebar").innerHTML =
+      '<p class="text-danger">Please log in to view your cart.</p>';
+    return;
+  }
+
+  if (window.location.pathname === "/editProfile.html") {
+    // hide the cart button
+    const cartButton = document.getElementById("cartButtonContainer");
+    if (cartButton) {
+      cartButton.hidden = true;
+    }
+  }
+
+  try {
+    const res = await fetch("/api/cart", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch cart");
+    }
+
+    const cart = await res.json();
+    let cartContainer = document.querySelector(".offcanvas-body");
+    cartContainer.innerHTML = "";
+
+    if (!cart.items || cart.items.length === 0) {
+      cartContainer.innerHTML = '<p class="text-muted">Your cart is empty.</p>';
       return;
     }
-    
-    if(window.location.pathname === '/editProfile.html') {
-      // hide the cart button
-      const cartButton = document.getElementById('cartButtonContainer');
-      if (cartButton) {
-        cartButton.hidden = true;
-      }
-    }
-  
-    try {
-      const res = await fetch('/api/cart', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-  
-      if (!res.ok) {
-        throw new Error('Failed to fetch cart');
-      }
-  
-      const cart = await res.json();
-      let cartContainer = document.querySelector('.offcanvas-body');
-      const newCartContainer = cartContainer.cloneNode(false);
-      cartContainer.parentNode.replaceChild(newCartContainer, cartContainer);
-      cartContainer = newCartContainer;
-  
-      if (cart.items.length === 0) {
-        cartContainer.innerHTML = '<p class="text-muted">Your cart is empty.</p>';
-        return;
-      }
-  
-      // Render cart items
-      const cartItemsHTML = cart.items.map(item => {
-        const variant = item.productId.variants.find(v => v._id === item.variantId); // Find the variant using variantId
+
+    // Render cart items HTML
+    const cartItemsHTML = cart.items
+      .map((item) => {
+        // Find the right variant from the product's variants using variantId
+        const variant = item.productId.variants.find(
+          (v) => v._id === item.variantId
+        );
         if (!variant) {
-          console.error('Variant not found for item:', item);
-          return '';
+          console.error("Variant not found for item:", item);
+          return "";
         }
-  
 
-        const original = item.productId.price;
-        const discount = item.productId.discount || 0;
-        // compute the per‐unit sale price
-        const unitPrice = +(original * (1 - discount/100)).toFixed(2);
+        const originalPrice = item.productId.price;
+        // Use the discount from the variant
+        const discount = variant.discount || 0;
+        const unitPrice = +(originalPrice * (1 - discount / 100)).toFixed(2);
 
-        const priceHtml = discount > 0
-        ? `<del>$${original.toFixed(2)}</del>
-          <span class="text-danger">$${unitPrice.toFixed(2)}</span>
-          <span class="badge bg-danger">-${discount}%</span>`
-        : `$${unitPrice.toFixed(2)}`;
+        // Build price HTML
+        const priceHtml =
+          discount > 0
+            ? `<del>$${originalPrice.toFixed(2)}</del>
+             <span class="text-danger">$${unitPrice.toFixed(2)}</span>
+             <span class="badge bg-danger">-${discount}%</span>`
+            : `<span>$${originalPrice.toFixed(2)}</span>`;
 
+        // Get the correct image using variant info if available
+        const sanitizedColor = variant.color.toLowerCase().replace(/\s+/g, "");
+        const sanitizedProductName = item.productId.name
+          .toLowerCase()
+          .replace(/\s+/g, "");
+        const variantImage =
+          item.productId.images.find((image) =>
+            image
+              .toLowerCase()
+              .includes(`${sanitizedProductName}-${sanitizedColor}`)
+          ) || "/assets/images/placeholder.png";
 
-        // Find the correct image for the variant
-        const sanitizedColor = variant.color.toLowerCase().replace(/\s+/g, '');
-        const sanitizedProductName = item.productId.name.toLowerCase().replace(/\s+/g, '');
-        const variantImage = item.productId.images.find(image =>
-          image.toLowerCase().includes(`${sanitizedProductName}-${sanitizedColor}`)
-        ) || '/assets/images/placeholder.jpg'; // Fallback to placeholder if no match
-  
         return `
           <div class="d-flex align-items-start mb-4 border-bottom pb-3" data-item-id="${item._id}">
             <img src="${variantImage}" 
@@ -81,90 +89,98 @@ export async function renderCart() {
                 </button>
               </div>
             </div>
-          </div>
-        `;
-      }).join('');
-  
-      // Calculate total price
-      const totalPrice = cart.items.reduce((total, item) => {
-        const variant = item.productId.variants.find(v => v._id === item.variantId);
-        if (!variant) return total;
-        const orig     = item.productId.price;
-        const disc     = item.productId.discount || 0;
-        const unitPrice= orig * (1 - disc/100);
-        return total + unitPrice * item.quantity;
-      }, 0);
-  
-      // Render cart total and checkout button
-      cartContainer.innerHTML = `
+          </div>`;
+      })
+      .join("");
+
+    cartContainer.innerHTML = `
         ${cartItemsHTML}
         <div class="d-flex justify-content-between fw-semibold mt-4 mb-3">
           <span>Total:</span>
-          <span>$${totalPrice.toFixed(2)}</span>
+          <span>$${cart.items
+            .reduce((total, item) => {
+              const variant = item.productId.variants.find(
+                (v) => v._id === item.variantId
+              );
+              if (!variant) return total;
+              const discount = variant.discount || 0;
+              const unitPrice = +(
+                item.productId.price *
+                (1 - discount / 100)
+              ).toFixed(2);
+              return total + unitPrice * item.quantity;
+            }, 0)
+            .toFixed(2)}</span>
         </div>
         <button class="btn btn-dark w-100" onclick="window.location.href='./checkout.html'">Checkout</button>
       `;
-  
-      // Use event delegation for delete buttons
-      cartContainer.addEventListener('click', (event) => {
-        const deleteButton = event.target.closest('.delete-button');
-        if (deleteButton) {
-          const itemId = deleteButton.closest('.d-flex.align-items-start').dataset.itemId;
-          removeFromCart(itemId);
+
+    // Use event delegation for delete buttons
+    cartContainer.addEventListener("click", (event) => {
+      const deleteButton = event.target.closest(".delete-button");
+      if (deleteButton) {
+        const itemId = deleteButton.closest(".d-flex.align-items-start").dataset
+          .itemId;
+        removeFromCart(itemId);
+      }
+    });
+
+    // Attach event listener for quantity input changes
+    const quantityInputs = cartContainer.querySelectorAll(".quantity-input");
+    quantityInputs.forEach((input) => {
+      input.addEventListener("input", (event) => {
+        const itemId = event.target.dataset.itemId;
+        const newQuantity = parseInt(event.target.value, 10);
+        if (newQuantity >= 1) {
+          updateCartItemQuantity(itemId, newQuantity);
         }
       });
-
-      // Attach event listener for quantity input changes
-      const quantityInputs = cartContainer.querySelectorAll('.quantity-input');
-      quantityInputs.forEach(input => {
-        input.addEventListener('input', (event) => {
-          const itemId = event.target.dataset.itemId;
-          const newQuantity = parseInt(event.target.value, 10);
-          if (newQuantity >= 1) {
-            updateCartItemQuantity(itemId, newQuantity);
-          }
-        });
-      });
-    } catch (err) {
-      console.error('Error fetching cart:', err);
-      document.querySelector('.offcanvas-body').innerHTML = '<p class="text-danger">Failed to load cart.</p>';
-    }
+    });
+  } catch (err) {
+    console.error("Error fetching cart:", err);
+    document.querySelector(".offcanvas-body").innerHTML =
+      '<p class="text-danger">Failed to load cart.</p>';
+  }
 }
 
 export function updateCartItemQuantity(itemId, quantity) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (!token) {
-    alert('You must be logged in to update the cart.');
-    window.location.href = 'login.html';
+    alert("You must be logged in to update the cart.");
+    window.location.href = "login.html";
     return;
   }
 
   // First, get the current cart to check stock
-  fetch('/api/cart', {
-    method: 'GET',
+  fetch("/api/cart", {
+    method: "GET",
     headers: {
-      'Authorization': `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   })
-    .then(res => res.json())
-    .then(cart => {
+    .then((res) => res.json())
+    .then((cart) => {
       // Find the item in the cart
-      const cartItem = cart.items.find(item => item._id === itemId);
+      const cartItem = cart.items.find((item) => item._id === itemId);
       if (!cartItem) {
-        throw new Error('Item not found in cart');
+        throw new Error("Item not found in cart");
       }
 
       // Find the variant to check stock
-      const variant = cartItem.productId.variants.find(v => v._id === cartItem.variantId);
+      const variant = cartItem.productId.variants.find(
+        (v) => v._id === cartItem.variantId
+      );
       if (!variant) {
-        throw new Error('Variant not found');
+        throw new Error("Variant not found");
       }
 
       // Check if requested quantity exceeds available stock
       if (quantity > variant.stock) {
         alert(`Sorry, only ${variant.stock} items available in stock.`);
         // Reset the input to the current quantity
-        const input = document.querySelector(`.quantity-input[data-item-id="${itemId}"]`);
+        const input = document.querySelector(
+          `.quantity-input[data-item-id="${itemId}"]`
+        );
         if (input) {
           input.value = cartItem.quantity;
         }
@@ -173,50 +189,50 @@ export function updateCartItemQuantity(itemId, quantity) {
 
       // If stock is sufficient, proceed with the update
       return fetch(`/api/cart/${itemId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ quantity })
+        body: JSON.stringify({ quantity }),
       });
     })
-    .then(res => {
+    .then((res) => {
       if (res) {
         return res.json();
       }
     })
     .then(() => {
-      console.log('Cart item quantity updated successfully!');
+      console.log("Cart item quantity updated successfully!");
       renderCart(); // Re-render the cart to reflect the updated quantity
     })
-    .catch(err => {
-      console.error('Error updating cart item quantity:', err);
-      alert('Failed to update cart item quantity.');
+    .catch((err) => {
+      console.error("Error updating cart item quantity:", err);
+      alert("Failed to update cart item quantity.");
     });
 }
-  
+
 export function removeFromCart(itemId) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (!token) {
-    alert('You must be logged in to remove items from the cart.');
-    window.location.href = 'login.html';
+    alert("You must be logged in to remove items from the cart.");
+    window.location.href = "login.html";
     return;
   }
 
   fetch(`/api/cart/${itemId}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'Authorization': `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   })
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(() => {
-      alert('Item removed from cart!');
+      alert("Item removed from cart!");
       renderCart(); // Re-render the cart after removing the item
     })
-    .catch(err => {
-      console.error('Error removing item from cart:', err);
-      alert('Failed to remove item from cart.');
+    .catch((err) => {
+      console.error("Error removing item from cart:", err);
+      alert("Failed to remove item from cart.");
     });
 }
