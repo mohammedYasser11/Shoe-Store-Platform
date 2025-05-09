@@ -18,5 +18,7 @@ dist/
 seedFromLocal.js
 data/
 
+.env
+
 # Logs
 *.log
