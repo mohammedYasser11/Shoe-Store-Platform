@@ -182,7 +182,7 @@ Directory structure:
 
 ### 1. Clone and install
 ```bash
-git clone https://github.com/Adham-Osama11/e-commerce-app.git
+git clone https://github.com/mohammedYasser11/Shoe-Store-Platform.git
 cd e-commerce-app
 npm install
 ```
